@@ -1,0 +1,79 @@
+<template>
+    <div class="cartComponent" onclick={hideError}>
+
+        <div class="serviceCart">
+            <div class="cartHeader">
+                <div class="hideZawashSelectionPartBtn" onclick={hideServiceCart}>
+                    <svg class="hideZawashSelectionPartBtnIcon" width="12" height="20"
+                        xmlns="http://www.w3.org/2000/svg" style="cursor: pointer;">
+                        <path fill="#187C29"
+                            d="M.222 9.232 9.462.215a.774.774 0 0 1 1.07 0l1.246 1.206a.715.715 0 0 1 0 1.036L4.32 9.75l7.46 7.293a.715.715 0 0 1 0 1.036l-1.247 1.206a.774.774 0 0 1-1.07 0l-9.24-9.017a.715.715 0 0 1 0-1.036Z"
+                            class="fa-primary"></path>
+                    </svg>
+                </div>
+                <p class="closeBtn" onclick={hideServiceCart}>{label.Close}</p>
+            </div>
+            <div class="cartContent">
+                <div style="display: flex;justify-content: center;">
+                    <h1 class="serviceName" style="color: black;"></h1>
+                    <div class="toolTip">
+                        <img class="tooptipIcon" src={toolTipIcon} alt=""
+                            style="width: 14px; height: 14px;margin-top:13px;margin-left:5px;cursor: pointer;"
+                            onclick={showTooltipContent}>
+                        <div class="tooltipContent"
+                            style="position: absolute; top: 100px; background: white; box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px; padding: 20px; width:90%;max-width: 400px; left: 0; margin-left: calc(50% - 200px);text-align:left;max-height: 70vh; overflow-y: auto;">
+                        </div>
+                    </div>
+                </div>
+                <img class="serviceImage" src={serviceImage} alt="">
+                <div class="error danger" style="display: none;">
+                    <div class="error1">
+                        <strong>{label.Sorry} !</strong> - {label.you_have_to_select_atleast} {errorServiceCount}
+                        {label.main_service}
+                    </div>
+                    <div class="error2" style="display:none">
+                        <strong>{label.Sorry} !</strong> - {label.please_select_atleast_one_AddOns}
+                    </div>
+                </div>
+                <div class="productAddBar">
+                    <div style="width:calc(100% - 80px);padding-top: 8px;text-align: left; color:black">
+                        <h2 class="productName">{currentCurrency}<span class="servicePrice serviceCost"
+                                style="padding-left: 4px;"></span> - <span class="serviceEstimatedTime"
+                                style="color:rgb(168, 168, 168);">45 min</span><span style="color:rgb(168, 168, 168);">
+                                 min</span></h2>
+                    </div>
+                    <div class="productCountMaintain">
+                        <span class="minusIcon mainMinusIcon" onclick={decreaseProductCount}>-</span>
+                        <span class="productCount mainProductCounter" style="padding-top:2px;font-weight: 500;">1</span>
+                        <span class="plusIcon mainPlusIcon" onclick={increaseProductCount}>+</span>
+                    </div>
+                </div>
+                <p style="text-align: center;font-size: 16px;font-weight: bold;padding-top:20px;color:black">{label.Extras}</p>
+                <template for:each={extraServices} for:item="extaService">
+                    <div class="productAddBar" key={Id} data-record={extaService}>
+                        <img src={extaService.icon__c} alt="" style="height: 60px;">
+                        <div class="productDetail">
+                            <h2 class="productName">{extaService.Name}</h2>
+                            <h2 class="productCost">{extaService.Currency__c}<span class="serviceCost"
+                                    style="padding-left: 4px;">{extaService.Price__c}</span><span
+                                    style="padding:0px 10px;">-</span><span
+                                    class="extraServiceTimeEstimate">{extaService.EstimatedDuration} min</span></h2>
+                        </div>
+                        <div class="productCountMaintain">
+                            <span class="minusIcon" onclick={decreaseProductCount}>-</span>
+                            <span class="productCount addOnsCount" data-id={extaService.Id}
+                                style="padding-top:2px;font-weight: 500;">0</span>
+                            <span class="plusIcon" onclick={increaseProductCount}>+</span>
+                        </div>
+                    </div>
+                </template>
+
+            </div>
+            <template if:true={addBtnVisibility}>
+                <div class="addBtnDiv" onclick={showSubTotalMiniComponent}>
+                    <div class="addBtn">{label.Add} -  {currentCurrency} <span class="totalCost">00</span></div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

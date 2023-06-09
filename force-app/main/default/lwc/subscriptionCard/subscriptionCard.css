@@ -1,0 +1,81 @@
+.paymentSection{
+    width: 100%;
+    max-width: 470px;
+	position: absolute;
+    background: white;
+	right:0; 
+    height: calc(100vh + 45px);
+    top:-32px;  
+    animation: rightIn 0.8s;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    z-index:6;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    transition: all 0.8s;
+}
+@keyframes rightIn {
+    0%{
+        right:-470px;
+    }
+    100%{
+        right:0;
+    }
+}
+.payments{
+    background:white;
+    width:100%;
+}
+.hidepaymentBtn{
+    padding:20px;
+    width:50px;
+    cursor: pointer;
+}
+.progressBar{
+    width:100%;
+    height: 3px;
+    background-color: #7fda8ea2;
+}
+.progress{
+    width:80%;
+    height:3px;
+    background: #187C29;
+}
+h1{
+    font-size: 25px;
+    font-weight: bold;
+    padding:10px 20px;
+}
+
+h2{
+    font-size: 15px;
+    font-weight: 500;
+    padding:20px 0px 10px 0px;
+}
+.flex{
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.paymentMethods{
+    padding:10px 0px;
+}
+
+.cardPayment,
+.bankPayment{
+    border:1px solid rgb(209, 209, 209);
+    border-radius: 10px;
+    margin:5px;
+    padding:20px 0;
+    width:200px;
+    cursor: pointer;
+    animation:ease-in 2s;
+}
+.cardPayment:hover,
+.bankPayment:hover{
+    border:1px solid #187C29;
+}
+.cardPayment img,
+.bankPayment img{
+    width: 70%;
+}

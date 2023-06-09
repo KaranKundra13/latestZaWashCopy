@@ -1,0 +1,142 @@
+<template>
+    <div class="slds-tabs_default">
+        <ul class="slds-tabs_default__nav penTab" role="tablist" style="width: fit-content;border-bottom-color: transparent;">
+            <li class="slds-tabs_default__item slds-is-active active-tab" title="Pending Booking" role="presentation"
+                onclick={openTab} data-id="tab-1">
+                <div class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true"
+                    aria-controls="tab-default-1" data-id="tab-default-1__item">{getLabelsValue.pendingBooking}</div>
+            </li>
+            <li style="margin-left:2vh;" class="slds-tabs_default__item inactive-tab preTab" title="Previous Booking" role="presentation"
+                onclick={openTab} data-id="tab-2">
+                <div class="slds-tabs_default__link" role="tab" tabindex="-1" aria-selected="false"
+                    aria-controls="tab-default-2" data-id="tab-default-2__item">{getLabelsValue.Previous_Bookings}</div>
+            </li>
+        </ul>
+        <div data-id="tab-default-1" class="slds-tabs_default__content slds-show" role="tabpanel"
+            aria-labelledby="tab-default-1__item" style="padding: 1rem;border:1px solid #c3b4b4;border-radius: 15px;">
+            <div style="overflow-x:auto;border-radius: 15px; max-height:50vh">
+
+            <table style="font-family: Roboto, sans-serif;font-size: 16px;min-width :1000px;">
+                <thead>
+                    <tr>
+                        <th>Quote Number</th>
+                        <th>{getLabelsValue.customerName}</th>
+                        <th>{getLabelsValue.status}</th>
+                        <th>{getLabelsValue.serviceDate}</th>
+                        <th>{getLabelsValue.timeSlot}</th>
+                        <th>{getLabelsValue.typeOfService}</th>
+                        <!-- <th>{getLabelsValue.carPlate}</th> -->
+                        <!-- <th>{getLabelsValue.carModel}</th> -->
+                        <!-- <th>{getLabelsValue.carYear}</th> -->
+                        <th>{getLabelsValue.carWasher}</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template if:true={pendingBooking} for:each={pendingBooking} for:item="pendingBook">
+                        <tr key={pendingBook.Id}>
+                            <td>{pendingBook.quote}</td>
+                            <td>{pendingBook.customerName}</td>
+                            <td>{pendingBook.status}</td>
+                            <td>{pendingBook.date}</td>
+                            <td>{pendingBook.timeSlot}</td>
+                            <td>{pendingBook.serviceType}</td>
+                            <!-- <td>{pendingBook.carPlate}</td> -->
+                            <!-- <td>{pendingBook.carModel}</td> -->
+                            <!-- <td>{pendingBook.carYear}</td> -->
+                            <td>{pendingBook.carWasher}</td>
+                            <td>
+                              
+                                <lightning-button-menu alternative-text="Show menu" menu-alignment="right" onopen={dropdownOpened}>
+                                      <div class="menuItems">
+                                    <lightning-menu-item class="values" value="edit" label={getLabelsValue.Edit}
+                                        data-id={pendingBook.Id} onclick={openEditModal}></lightning-menu-item>
+                                    <lightning-menu-item class="values" value="cancel" label={getLabelsValue.Cancel}
+                                        data-id={pendingBook.Id} onclick={openCancelModel}></lightning-menu-item>
+                                         </div>
+                                </lightning-button-menu>
+                                                                   
+
+                                
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            </div>
+
+        </div>
+
+
+        <div data-id="tab-default-2" class="slds-tabs_default__content slds-hide" role="tabpanel"
+            aria-labelledby="tab-default-2__item" style="padding: 1rem;border:1px solid #c3b4b4;border-radius: 15px;">
+            <div style=" overflow-x: auto;
+    border-radius: 15px;
+    max-height: 50vh;">
+            <table style="font-family: Roboto, sans-serif;font-size: 16px;     padding-left: 15px;  padding-right: 10px; min-width :1000px;">
+                <thead>
+                    <tr>
+                        <th>Quote Number</th>
+                        <th>{getLabelsValue.customerName}</th>
+                        <th>{getLabelsValue.status}</th>
+                        <th>{getLabelsValue.serviceDate}</th>
+                        <th>{getLabelsValue.timeSlot}</th>
+                        <th>{getLabelsValue.typeOfService}</th>
+                        <!-- <th>{getLabelsValue.carPlate}</th> -->
+                        <!-- <th>{getLabelsValue.carModel}</th> -->
+                        <!-- <th>{getLabelsValue.carYear}</th> -->
+                        <th>{getLabelsValue.carWasher}</th>
+                        <th>{getLabelsValue.invoicepreview}</th>
+                        <th>{getLabelsValue.rating}</th>
+                       
+
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template if:true={oldBookings} for:each={oldBookings} for:item="oldBook">
+                        <tr key={oldBook.Id}>
+                            <td>{oldBook.quote}</td>
+                            <td>{oldBook.customerName}</td>
+                            <td>{oldBook.status}</td>
+                            <td>{oldBook.date}</td>
+                            <td>{oldBook.timeSlot}</td>
+                            <td>{oldBook.serviceType}</td>
+                            <!-- <td>{oldBook.carPlate}</td> -->
+                            <!-- <td>{oldBook.carModel}</td> -->
+                            <!-- <td>{oldBook.carYear}</td> -->
+                            <td>{oldBook.carWasher}</td>
+
+                            <td class="actionPreview">
+                                <lightning-icon class="icons" icon-name='action:preview' alternative-text='preview' size='x-small' title='preview' data-id={oldBook.Id} onclick={openInvoiceModal}></lightning-icon></td>
+                            <!-- <td><lightning-button-menu alternative-text="Show menu" menu-alignment="right">
+                                <lightning-menu-item value="rating" label="View Invoice"
+                                    data-id={oldBook.Id} onclick={openInvoiceModal}></lightning-menu-item>
+                                    <lightning-menu-item value="rating" label="Download Invoice"
+                                    data-id={oldBook.Id} onclick={openInvoiceModal}></lightning-menu-item>
+                            </lightning-button-menu></td> -->
+                            
+                            <td> <template if:false={oldBook.showRatingButton}>
+                                    <img src={oldBook.rating} alt="rating"
+                                        style="height: auto;width: 65%;margin: 0px;padding: 0px;">
+                                </template> </td>
+                            
+                            <td>
+                                <template if:true={oldBook.showRatingButton}>
+                                    <lightning-button-menu alternative-text="Show menu" menu-alignment="right">
+                                        <lightning-menu-item value="rating" label={getLabelsValue.rating}
+                                            data-id={oldBook.Id} onclick={openRateModal}></lightning-menu-item>
+                                    </lightning-button-menu>
+                                </template>
+                            </td>
+                            
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+    </div>
+
+</template>

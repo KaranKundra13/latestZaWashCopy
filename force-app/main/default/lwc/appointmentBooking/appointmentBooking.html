@@ -1,0 +1,355 @@
+<template>
+
+    <div class="calender">
+        <div class="hideAppointmentBookingPartBtn" onclick={hideAppointmentBooking}>
+            <svg class="hideAppointmentBookingPartBtnIcon" width="12" height="20" xmlns="http://www.w3.org/2000/svg"
+                style="cursor: pointer;">
+                <path fill="#187C29"
+                    d="M.222 9.232 9.462.215a.774.774 0 0 1 1.07 0l1.246 1.206a.715.715 0 0 1 0 1.036L4.32 9.75l7.46 7.293a.715.715 0 0 1 0 1.036l-1.247 1.206a.774.774 0 0 1-1.07 0l-9.24-9.017a.715.715 0 0 1 0-1.036Z"
+                    class="fa-primary"></path>
+            </svg>
+        </div>
+        <div class="progressBar">
+            <div class="progress"></div>
+        </div>
+        <div class="calenderContent">
+            <div class="monthControll" style="display: flex;justify-content: space-around;">
+                <div class="leftShift" onclick={reduceMonth}><img src={leftAngle} alt=""></div>
+                <div class="calenderMonth"><span class="month" style="color: black;">February</span><span style="margin-left:10px; color: black;"
+                        class="year">2022</span></div>
+                <div class="rightShift" onclick={addMonth}><img src={rightAngle} alt=""></div>
+            </div>
+            <div class="calender-content">
+                <span style="color: black;"><b>M</b></span>
+                <span style="color: black;"><b>T</b></span>
+                <span style="color: black;"><b>W</b></span>
+                <span style="color: black;"><b>Th</b></span>
+                <span style="color: black;"><b>F</b></span>
+                <span style="color: black;"><b>S</b></span>
+                <span style="color: black;"><b>S</b></span>
+
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+            </div>
+            <div class="loader"
+                style="display:none;position: absolute; top: 65px; background: white; opacity: 0.5; width: 100%; height: 100vh; padding-top: 250px;">
+                <div class="demo-only demo-only_viewport" style="height:6rem;position:relative">
+                    <div role="status" class="slds-spinner slds-spinner_medium">
+                        <span class="slds-assistive-text">{label.loading}</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="noTimeSlots" style="display:none;padding: 20px 65px;color:black;">
+                <p>{label.slotErrorsinfo} : </p>
+                <ul style="padding: 10px 0px 10px 10px;">
+                    <li>1] {label.slotFirstError}</li>
+                    <li style="padding:5px 0px">2] {label.slotSecondError}</li>
+                    <li>3] {label.slotThirdError}</li>
+                </ul>
+            </div>
+            <div class="timeSlots" style="padding:20px;text-align: center; color:black">
+                <template for:each={timeSlots} for:item="timeSlot">
+                    <div class="slot" key={Id} onclick={btnClicked}>{timeSlot}</div>
+                </template>
+            </div>
+
+            <template if:true={carDetailsVisibility}>
+                <div class="carDetails" style="    color: black;">
+                    <h1 style="width:85%;margin: auto;padding:20px 0px ;color:black;">
+                        {label.Please_fill_the_following_details} :
+                    </h1>
+                    <div style="display: flex;width: 82%;margin:auto; color:black">
+                        <lightning-combobox label={label.countryCode} value={selectedCountryCode}
+                            options={countryCodeOptions} onchange={handleCountryCodeChange}
+                            style="margin-top: 6px;width: 135px;"></lightning-combobox>
+                        <lightning-input label={label.mobileNo} class="mobileNo carDetailsInput" type="text"
+                            onkeydown={appendMobileNo} placeholder='1234567890'
+                            style="width: 105%;margin:auto;padding: 6px;font-size: 16px;" maxlength="10">
+                        </lightning-input>
+                    </div>
+
+                    <lightning-input label={label.Car_brand_model} class="carBrandModel carDetailsInput" type="text"
+                        placeholder='Audi, Q3' style="width: 85%;margin:auto;padding: 6px;font-size: 16px;"
+                        maxlength="50">
+                    </lightning-input>
+
+                    <lightning-input label={label.Color_Plate_number} class="colorPlateNumber carDetailsInput"
+                        type="text" placeholder="White, VD 123456"
+                        style="width: 85%;margin:auto;padding: 6px;font-size: 16px;" maxlength="50">
+                    </lightning-input>
+
+                    <lightning-input onchange={onlyNumericAllowed} label={label.Car_year} class="carYear carDetailsInput" type="text"
+                        placeholder="2019" maxlength="4" value="" minlength="4"
+                        style="width: 85%;margin:auto;padding: 6px;font-size: 16px;" 
+                        min="0">
+                    </lightning-input>
+                </div>
+            </template>
+
+            <div class="Error"
+                style="display:none;width: 85%;background-color: #ffffff;padding: 12px 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;margin: 10px auto;font-family: 'Open Sans', sans-serif;font-size: 16px;border-left-color: #d9534f;background-color: rgba(217, 83, 79, 0.1);">
+                <strong style="color:#d9534f;">{label.Error}</strong> - <span class="errorMsg"></span>
+            </div>
+
+            <div class="goToPayment" onclick={goToPayment} style="display: none;">{label.next}
+            </div>
+        </div>
+         <template if:true={showSummary}>
+        <h1 style="font-size: xx-large;
+        font-family: sans-serif;
+        text-align: center;color:black;
+    ">{label.summaryofyourQuote}</h1>
+         </template>
+        <!-- <h1 class="thankyouText" style="display: none;padding: 40px; font-size: 18px;">{label.appointmentBooking}..!
+
+
+        </h1> -->
+        <!-- <div class="infoWrap">
+            <div class="details">
+                <table>
+                    <tbody>
+                        <template for:each={customerData} for:item="data">
+                            <tr key={data.Name} class="table">
+                                <td ><b>{data.Name}</b></td>
+                                <td >{data.Quantity__c}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>   -->
+
+        <template if:true={loader1}>
+            <div
+                style="position: absolute; top: 65px; background: white; opacity: 0.5; width: 100%; height: 100vh; padding-top: 250px;">
+                <div class="demo-only demo-only_viewport" style="height:6rem;position:relative">
+                    <div role="status" class="slds-spinner slds-spinner_medium">
+                        <span class="slds-assistive-text">{label.loading}</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={showAddons}>
+            
+            <div style="padding: 0px 4%;">
+                <img style="width: 11rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;cursor: pointer;    display: block;
+        margin-left: auto;
+        margin-right: auto;" src={summaryIcon} alt="toSee">
+        <div class="outerdiv" style="left: 60px;
+    position: relative;">
+                <h1 style="color: black; align-items: center;
+    display: flex;">
+                    <div class="infoWrap" >
+                        <div class="details" style="    white-space: nowrap;">
+                            <table>
+                                <tbody>
+                                    <template for:each={customerData} for:item="data">
+                                        <tr key={data.Name} class="table">
+                                            <td style=" 
+                                padding: 2px;
+                                border-collapse: collapse;
+                                width: 140px; font-size:larger;"><b>{data.Name} :</b></td>
+                                            <td style=" 
+                                
+                                padding: 2px;
+                                border-collapse: collapse;
+                                width: 140px; ;font-size:larger">{data.Quantity__c}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </h1>
+                <!-- <h1 style="color: black;">
+            <div class="infoWrap">
+                <div class="details">
+                    <table>
+                        <tbody>
+                            <template for:each={allAddons} for:item="data">
+                                <tr key={data.Name} class="table">
+                                    <td class="keys"><b>{data.Name} :</b></td>
+                                    <td style="
+                                    padding: 2px;
+                                    border-collapse: collapse;
+                                    width: 140px;text-align:center">{data.Quantity__c}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>  
+        </h1> -->
+
+        <!-- <div class="democlass"> -->
+                <h1  style="font-family: Roboto, sans-serif;font-size: larger; display:flex;color:black;
+    max-height: 10rem;margin-right: 2rem; left: 2.5px;
+    position: relative;"
+                    data-id="addons"> <span style="font-weight:600;
+            ">{label.addOns} : </span>
+            <div style="width: 65%;  left: 1rem;
+    position: relative; overflow-y: scroll;">    
+                    <table>
+                        <thead style=" border-bottom-style: outset;">
+                            <tr style="background-color: white; top: 0;
+    position: sticky;">
+                                <th>{label.customerName}</th>
+
+                                <th>{label.Quantity}</th>
+                                <!-- <th>Price</th> -->
+                            </tr>
+
+                        </thead>
+                        <tbody style="overflow-y: scroll;">
+                            <template for:each={allAddons} for:item="data">
+                                <tr key={data.Name} style=" border-bottom-style: outset;">
+                                    <td>{data.Name}</td>
+                                    <td style="text-align: center;">{data.Quantity__c}</td>
+                                    <!-- <td>{addon.price}</td> -->
+                                </tr>
+                                <!-- <hr style="margin: 0px;" key={data.Name}> -->
+                            </template>
+                        </tbody>
+                    </table>
+                    </div>
+                </h1>
+
+            <!-- </div> -->
+                <div class="addBtn" style="color: white;">{label.totalPrice}: {currentCurrency} {totalB2BPrice} <span
+                        class="totalCost"></span></div>
+            </div>
+            <!-- <div style="text-align: centre;">{totalB2BPrice}</div> -->
+      </div>
+        </template>
+        <template if:true={showSummary}>
+           
+            <img style="width: 11rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;cursor: pointer;margin-left: calc(50% - 88px);" src={summaryIcon} alt="toSee">
+        <div class="outerdiv" style="">
+            <h1>
+                <div class="infoWrap" style="    color: black;
+">
+                    <div class="details" style="    white-space: nowrap;">
+                        <table>
+                            <tbody>
+                                <template for:each={allAddons} for:item="data">
+                                    <tr key={data.key} class="table">
+                                        <td style=" 
+                                    padding: 2px;
+                                    border-collapse: collapse;
+                                    width: 140px;"><b>{data.key} :</b></td>
+                                        <td style=" 
+                                    padding: 2px;
+                                    border-collapse: collapse;
+                                    width: 140px;">{data.value}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </h1>
+            <div class="addBtn" style="color: white;">{label.totalPrice} : {currentCurrency} {totalB2BPrice} <span
+                    class="totalCost"></span></div>
+
+            <!-- <div style="text-align: centre;">{totalB2BPrice}</div> -->
+            </div>
+
+        </template>
+
+        <h1 class="thankyouText" style="display: none;padding: 40px; font-size: 18px;color:black">
+            {label.appointmentBooking}..!
+
+
+        </h1>
+    </div>
+
+
+    <!-- <template if:true={thankyouPageVisibility}>
+
+        
+        <div class="thankyouPage" onclick={hideError}>
+            <div class="hideAppointmentBookingPartBtn" onclick={hideAppointmentBooking}>
+                <svg class="hideAppointmentBookingPartBtnIcon" width="12" height="20" xmlns="http://www.w3.org/2000/svg"
+                    style="cursor: pointer;">
+                    <path fill="#187C29"
+                        d="M.222 9.232 9.462.215a.774.774 0 0 1 1.07 0l1.246 1.206a.715.715 0 0 1 0 1.036L4.32 9.75l7.46 7.293a.715.715 0 0 1 0 1.036l-1.247 1.206a.774.774 0 0 1-1.07 0l-9.24-9.017a.715.715 0 0 1 0-1.036Z"
+                        class="fa-primary"></path>
+                </svg>
+            </div>
+            <div class="progressBar">
+                <div class="progress"></div>
+            </div>
+            >>>>>>>>>>>>>>>>>>>>>>
+            <div class="detailForm" style="padding:10px 40px;overflow-y: auto;height: 90vh;">
+                <p style="font-size: 18px;padding:10px 0px;">{label.pleaseFillTheFollowingDetails} : </p>
+                <template for:each={carsarray} for:item="car">
+                    <div key={car.key} class="card" style="border-radius: 10px; border: 1px solid rgb(205,205,205); padding: 0px 20px 20px 20px; margin: 30px 0px;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                        <div style="text-align: center; font-weight: bold; padding-top: 10px; font-size: 15px;">{label.Car} {car} {label.Details}</div>
+                        <div class="cardHeader" style="display: flex;justify-content: space-between;">
+                            <img src="https://zawash--sandbox.sandbox.preview.salesforce-experience.com/sfsites/c/resource/1663579987000/Zawash/ZawashIcons/adomicile.png" alt="" style="width:100px;margin-bottom: 15px;">
+                            <lightning-input class="carDetailInput" type="text" label={label.Car_brand_model} placeholder={label.Car_brand_model} style="width:clac(100% - 100px);margin-top: 15px;">
+                            </lightning-input>
+                        </div>
+                        <lightning-input class="carDetailInput" type="text" label={label.Color_Plate_number} placeholder="White, VD 123456">
+                        </lightning-input>
+                        <lightning-input class="carDetailInput" type="number" label={label.Car_year} placeholder="2019"></lightning-input>
+                    </div>
+                </template>
+                <div class="Error"
+                            style="display:none;width: 95%;background-color: #ffffff;padding: 12px 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;margin: 10px auto;font-family: 'Open Sans', sans-serif;font-size: 16px;border-left-color: #d9534f;background-color: rgba(217, 83, 79, 0.1);">
+                            <strong style="color:#d9534f;">All Fields are required !</strong> - <span class="errorMsg">  Please fill all the details for each car.</span>
+                        </div>
+                <div class="detailSubmitBtn" onclick={StoreDetailsAndShowThankyouText}>{label.Submit}</div>
+            </div>
+        </div>
+    </template> -->
+</template>

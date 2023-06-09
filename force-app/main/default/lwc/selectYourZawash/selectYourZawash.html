@@ -1,0 +1,44 @@
+<template>
+    <div class="selectZawash">
+        <div class="zawashSelection">
+            <h1>{label.SelectYourZaWash}</h1>
+    
+                <div class="flex">
+                    <div class="Subscription zaWashOptions" data-name="Subscription" onclick={showChooseServices}>
+                        <img data-name="Subscription" src={SubscriptionIcon} alt="">
+                        <h2 data-name="Subscription">{label.Subscription}</h2>
+                        <h3 data-name="Subscription">{label.ViewOptions}</h3>
+                    </div>
+                    <div class="atHome zaWashOptions" data-name="One Time" onclick={showChooseServices}>
+                        <img data-name="One Time" src={atHomeIcon} alt="">
+                        <h2 data-name="One Time">{label.OneTime}</h2>
+                        <h3 data-name="One Time">{label.ViewOptions}</h3>
+                    </div>
+                </div>
+
+            <!-- <template if:true={serviceSpotVisibility}>
+                <div class="serviceBlocks flex">
+                    <div class="serviceBlock1" onclick={proceedToServiceCart}>
+                        <img class="serviceBlock1Image" src={serviceOneIcon} alt="">
+                        <h2 class="serviceBlock1Heading">At your home</h2>
+                        <h3>Proceed</h3>
+                    </div>
+                    <div class="serviceBlock2" onclick={proceedToServiceCart}>
+                        <img class="serviceBlock2Image" src={serviceTwoIcon} alt="">
+                        <h2 class="serviceBlock2Heading">Partner car parks</h2>
+                        <h3>Proceed</h3>
+                    </div>
+                </div>
+            </template> -->
+        </div>
+
+            <!-- <div class="subTotalMiniComponent" style="display:none">
+                <div class="subTotalDetails">
+                    <p class="subTotalProductCounter">1</p>
+                    <h4 class="subTotalCostCounter">CHF <span class="subTotalCost"></span>.00</h4>
+                </div>
+                <div class="subTotalNextBtn" onclick={proceedToAppointmentBooking}>Next</div>
+            </div> -->
+        
+    </div>
+</template>

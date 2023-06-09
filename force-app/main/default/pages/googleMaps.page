@@ -1,0 +1,224 @@
+<apex:page showHeader="false">
+    <apex:includeLightning />  
+    <apex:includescript value="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"/>
+    <html>
+        
+        <head>
+            <title>Directions Service</title>
+            <style>
+                /* Always set the map height explicitly to define the size of the div
+                * element that contains the map. */
+                
+                #map {
+                width:100%;
+                position:absolute;
+                top:0;
+                left:0;
+                height: 100vh;
+                transition: all 0.8s
+                overflow:hidden;
+                }
+                
+                body{
+                height:100vh;
+                }
+                
+                #LightningComponentid{
+                top: 0;
+                left: 0;
+                margin: -10px 0px 0px -20px;
+                padding: 0;
+                width: calc(100% + 28px);
+                }
+                
+            </style>
+        </head>
+        
+        <body>
+            
+            <div id="map" class="map"></div>
+            <div id="LightningComponentid" /> 
+            <script type='text/javascript'>
+            
+            
+            
+            var theCmp;
+            var vfPage;
+            var url = parent.window.location.href;
+            function passCustomerType(setlanguage)
+            {
+                parent.window.location.replace('https://zawash.my.site.com/zaWash/s/login/?language='+setlanguage);
+                console.log('Passing Event Back');
+            };
+
+            function updateURLParameter(param)
+            {
+                const newUrl = parent.window.location.protocol + '//' + parent.window.location.host + parent.window.location.pathname + '?language=' + param;
+                console.log('newUrl : VF : ' + newUrl);
+                parent.window.history.pushState({}, null, newUrl);
+            };
+            
+            vfPage = {
+                passCustomerType:passCustomerType,
+                url:url,
+                updateURLParameter:updateURLParameter
+                
+            };
+            $Lightning.use("c:googleMapAplication", function() {
+                $Lightning.createComponent("c:zaWash",
+                                           { 
+                                               "vfPage":vfPage,
+                                           },
+                                           "LightningComponentid",
+                                           function(cmp) {
+                                               console.log('LWC Renderd Here');
+                                               
+                                                window.addEventListener("redirectFromLWC", function(){
+            console.log('vf event data window listener => ');
+             sforce.one.showToast({
+
+            "title": "Hello There!!",
+
+            "message": "I am a toast message being fired from visualforce page",
+
+           "type": "success"
+
+        });
+                       });
+                                               window.addEventListener('messagerfromlwc', function (event) {
+                                                   console.log('Event.catch in VF');
+                                                   console.log(JSON.parse(event.detail));
+                                                   
+                                                   if(JSON.parse(event.detail).eventType == 'setMarker')
+                                                   {
+                                                       console.log('Setting Marker');
+                                                       const myLatLng = { lat: parseFloat(JSON.parse(event.detail).data.split(',')[0]), lng: parseFloat(JSON.parse(event.detail).data.split(',')[1]) };
+                                                       marker.setMap(null);
+                                                       directionsDisplay.setMap(null);
+                                                       marker = new google.maps.Marker({
+                                                           draggable:true,
+                                                           animation: google.maps.Animation.DROP,
+                                                           position: myLatLng,
+                                                           map,
+                                                       });
+                                                           
+                                                           google.maps.event.addListener(marker, 'dragend', function(evt) 
+                                                           {
+                                                           console.log('marker draged');
+                                                           console.log(evt.latLng.lat().toFixed(5) + ',' + evt.latLng.lng().toFixed(5));
+                                                           
+                                                           const customEventVar1 = new CustomEvent('messagerfromvf', { detail: [evt.latLng.lat().toFixed(3) + ',' + evt.latLng.lng().toFixed(3)], bubbles: true, composed: true });
+                                                       window.dispatchEvent(customEventVar1);
+                                                       
+                                                       console.log('Event fired');
+                                                   });
+                                                   
+                                                   map.setCenter(myLatLng);
+                                                   map.setZoom(parseInt(JSON.parse(event.detail).zoomLevel));
+                                               }
+                                                                       
+                                                                       if(JSON.parse(event.detail).eventType == 'getcustomertype')
+                                               {
+                                                   console.log('Get Customer Type Event Catched');
+                                                   var customerType = 'bookNow';
+                                                   const customEventVar1 = new CustomEvent('customertype', { detail: [customerType], bubbles: true, composed: true });
+                                                   window.dispatchEvent(customEventVar1);
+                                                   console.log('Event Passed Back');
+                                               }
+                                               
+                                               
+                                               if(JSON.parse(event.detail).eventType == 'getRoute')
+                                               {
+                                                   console.log('Get Route Event Ctached');
+                                                   var start = { lat: parseFloat(JSON.parse(event.detail).customerLocation.split(',')[0]), lng: parseFloat(JSON.parse(event.detail).customerLocation.split(',')[1]) };
+                                                   var end = { lat: parseFloat(JSON.parse(event.detail).partnerLocation.split(',')[0]), lng: parseFloat(JSON.parse(event.detail).partnerLocation.split(',')[1]) };
+                                                   var request = {
+                                                       origin: start,
+                                                       destination: end,
+                                                       travelMode: 'DRIVING'
+                                                   };
+                                                   directionsService.route(request, function(result, status) {
+                                                       if (status == 'OK') {
+                                                           marker.setMap(null);
+                                                           directionsDisplay.setMap(map);
+                                                           directionsDisplay.setDirections(result);
+                                                       }
+                                                   });
+                                               }
+                                               
+                                               if(JSON.parse(event.detail).eventType == 'reduceZoomLevel')
+                                               {
+                                                   map.setZoom(parseInt(JSON.parse(event.detail).zoomLevel));
+                                               }
+                                               
+                                               if(JSON.parse(event.detail).eventType == 'setCenter')
+                                               {
+                                                   console.log('Setting Marker');
+                                                   
+                                      
+                                                   const myLatLng = { lat: parseFloat(JSON.parse(event.detail).data.split(',')[0]), lng: parseFloat(JSON.parse(event.detail).data.split(',')[1]) };
+                                                   
+                                                   map.setCenter(myLatLng);
+                                               }
+                                               
+                                               
+                                               
+                                               
+                                               
+                                               
+                                           }, false)
+                theCmp=cmp;
+                
+            });
+            });
+            
+     
+            </script>
+           
+            
+            <script>
+            
+            var lexOrigin = "";
+            
+            var map;
+            var marker = [];
+            var directionsService;
+            var directionsDisplay;
+            
+            function initMap() {
+                directionsService = new google.maps.DirectionsService;
+                directionsDisplay = new google.maps.DirectionsRenderer;
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 17,
+                    center: { lat: 37.790197, lng: -122.396879 },
+                    gestureHandling: 'greedy',
+                    streetViewControl: false,
+                    //center: latLng,
+                    clickableIcons: false,
+                    draggable: true,
+                    disableDoubleClickZoom: true,
+                    fullscreenControl: false,
+                    streetViewControl: false,
+                    mapTypeControl: false,
+                    mapTypeControlOptions: {
+                        mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain', 'styled_map']
+                    },
+                    zoomControl: true,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    //gestureHandlingOption: "cooperate",
+                });
+                directionsDisplay.setMap(map);
+                marker = new google.maps.Marker();
+                
+                
+            }
+     
+            
+            </script>
+            <script async="true" defer="true" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0L9lEKzcl6bhEeclgaO4NPBtFFRe_-hk&callback=initMap">
+            </script>
+        </body>
+        
+    </html>
+    
+</apex:page>

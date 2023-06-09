@@ -1,0 +1,57 @@
+<template>
+
+    <template if:true={showRefundDetails}>
+        <template if:true={refundOrCouponScreen}>
+            <div class="refundOrCouponScreen" style="padding: 20px;width: max-content;margin: auto;display: flex;">
+                <!-- <h1 style="font-size: 15px;">Select option:</h1> -->
+                <!-- <div
+                    style="display: flex; padding: 10px 20px; background: #e5e5e5; border-radius: 5px;cursor: pointer;margin: 5px 0px;">
+                    <Input type="checkbox" style="margin-right:10px;width:15px" onclick={optionSelected}>
+                    <p style="font-size: 14px;font-weight: 600;">Initiate Refund</p>
+                </div> -->
+                <!-- <div
+                    style="display: flex; padding: 10px 20px; background: #e5e5e5; border-radius: 5px;cursor: pointer;margin: 5px 0px;">
+                    <Input type="checkbox" style="margin-right:10px;width:15px" onclick={   }>
+                    <p style="font-size: 14px;font-weight: 600;">Generate Credit Note</p>
+                </div> -->
+                <div style="display: flex;justify-content: center;padding: 10px 0px;margin:0px 5px">
+                    <button class="slds-button slds-button_brand" onclick={nextScreen}>Initiate Refund</button>
+                </div>
+                <!-- <div style="display: flex;justify-content: center;padding: 10px 0px;margin:0px 5px">
+                    <button class="slds-button slds-button_brand" onclick={nextScreen}>Generate Credit Note</button>
+                </div> -->
+            </div>
+        </template>
+        <template if:true={serviceScreen}>
+            <div style="padding: 20px;">
+                <h1 style="font-size: 15px;">Choose service to {serviceChoosen}</h1>
+                <div style="padding: 20px 30px;">
+                    <div
+                        style="display: flex; padding: 10px 20px; background: #e5e5e5; border-radius: 5px;cursor: pointer;">
+                        <Input class="mainCheckbox" type="checkbox" style="margin-right:5px;width:18px"
+                            onclick={mainServiceChoosen}>
+                        <lightning-icon icon-name="utility:chevronright" size="x-small" style="margin:2px 20px 0px"
+                            onclick={showAddons}></lightning-icon>
+                        <p style="font-size: 16px;font-weight: 600;">{workTypeName} ({Currency} {workTypePrice})</p>
+                    </div>
+                    <div class="addOns" style="margin: 0px 0px 0px 60px;height:0px;overflow: hidden;">
+                        <template for:each={addOns} for:item="addOn">
+                            <div key={addOn.Id} style="display: flex; padding: 10px; margin: 2px;">
+                                <Input type="checkbox" style="margin-right:10px;width:14px" onclick={addOnChoosen}
+                                    data-id={addOn.Id} data-amount={addOn.Price__c}>
+                                <p style="font-size: 14px;font-weight: 600;">{addOn.Name} ({Currency} <span>
+                                        {addOn.Price__c}</span>)</p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex;justify-content: center;">
+                <button class="slds-button slds-button_brand" onclick={initiateRefund}>{serviceChoosen}</button>
+            </div>
+        </template>
+    </template>
+    <template if:true={noRefund}>
+        <p style="text-align: center;padding: 50px 0px;font-weight: 500;">There is no service to Refund.</p>
+    </template>
+</template>

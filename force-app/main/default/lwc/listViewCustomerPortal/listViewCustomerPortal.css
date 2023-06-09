@@ -1,0 +1,76 @@
+thead {
+    background: #187c29;
+    color: white;
+    border-radius: 15px;
+}
+
+th,
+td {
+    padding: 10px 0px 10px 20px;
+}
+
+.active-tab {
+    font-family: Roboto, sans-serif;
+    font-size: 16px;
+    background: #187c29;
+    color: white;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.icons:hover{
+    cursor: pointer;
+}
+
+.inactive-tab {
+    color: #187c29;
+    font-size: 16px;
+    border: 1px solid #187c29;
+    border-radius: 10px 10px 0px 0px;
+    background: white;
+}
+
+.pendingBooking,
+.previousBookings {
+    width: 48.5%;
+    border-radius: 50px;
+    border: 1px solid rgb(213, 213, 213);
+}
+
+.slds-dropdown,
+.slds-dropdown_left {
+    left: -65px;
+}
+
+.slds-dropdown {
+    position: absolute;
+    top: var(--dropdown-top);
+}
+
+.slds-dropdown-trigger {
+    /* position: unset; */
+    /* position: absolute; */
+}
+
+.slds-button{
+    right: 2rem;
+}
+.slds-dropdown-trigger > div {
+    top: var(--dropdown-top);
+}
+.actionPreview{
+    text-align: center;
+    padding: 0px;
+}
+.tableContainer{
+    border: 1px solid #c3b4b4;
+    border-radius: 15px;    
+    padding: 1rem;
+}
+.penTab{
+    margin-left: 1rem;
+}
+.tablepreContainer{
+    border: 1px solid #c3b4b4;
+    border-radius: 15px;
+    padding: 1rem;
+}

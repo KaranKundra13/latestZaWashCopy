@@ -1,0 +1,77 @@
+.flex{
+    display: flex;
+}
+.logo{
+    width:250px;
+    padding:10px;
+}
+.content{
+    text-align: center;
+    margin:auto;
+}
+.contentInfo{
+    color:black;
+    font-weight: bold;
+    font-size: 26px;
+    padding:20px;
+    border:none;
+}
+.searchBarIcon1 img,
+.searchBarIcon2 img{
+    
+    height:auto;
+    vertical-align: text-bottom;
+    cursor: pointer;
+}
+.searchBarIcon1 img{
+    width:18px;
+}
+.searchBarIcon2 img{
+    width:16px;
+    transform: rotate(45deg);
+}
+
+.locationInput input{
+    border:none;
+    outline:none;
+    background:transparent;
+    padding:10px 0;
+    font-size:19px;
+    width: calc( 100% - 40px);
+}
+.locationInput input:active{
+    border: none;
+    outline:none;
+}
+
+.locationInput{
+    width:90%;
+    max-width:450px;
+    margin:auto;
+    margin-bottom: 20px;
+    box-shadow: rgb(0 0 0 / 35%) 0px 2px 10px;
+    border-radius:10px;
+    background: white;
+    padding:6px 10px;
+    display: flex;
+}
+.searchSuggestion{
+    width:90%;
+    max-width:480px;
+    margin:auto;
+    box-shadow: 0 6px 24px 0 rgb(0 0 0 / 10%);
+    border-radius:10px;
+    background: white;
+    margin-top:10px;
+    padding:10px;
+    text-align: left;
+}
+.searchSuggestion p{
+    padding:10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.searchSuggestion p:hover{
+    background-color: rgb(235, 235, 235);
+}

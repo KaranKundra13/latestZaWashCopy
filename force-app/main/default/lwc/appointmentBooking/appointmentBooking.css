@@ -1,0 +1,337 @@
+.calender,
+.thankyouPage {
+	width: 100%;
+	max-width: 470px;
+	position: absolute;
+	background: white;
+	top:0;
+	right: 0;
+	height: calc(100vh);
+	animation: rightIn 0.6s;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	z-index: 4;
+	overflow-y: auto;
+	font-family: 'Roboto', sans-serif;
+	animation: rightIn 0.6s;
+}
+.infoWrap {
+    display: flex;
+    justify-content: center;
+    font-family: Roboto, sans-serif;
+}
+.details{
+    /* text-align: left; */
+    font-family: Roboto, sans-serif;
+}
+
+.calenderContent{
+	height: calc(100% - 65px);padding-bottom: 20px;overflow-y: auto;
+}
+.addBtn{
+	text-align: center;
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    width: 7rem;
+    /* max-width: 400px; */
+    background: #187C29;
+    padding: 0.5rem;
+    border-radius: 10px;
+    /* margin-bottom: 10px; */
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /* cursor: pointer; */
+    margin-top: 1rem;
+    min-width: 15rem;
+}
+.keys {
+    /* border: 2px solid black; */
+    padding: 2px;
+    border-collapse: collapse;
+    width: 140px;
+	
+    /* display: flex;
+    flex-wrap: wrap; */
+}
+
+@keyframes rightIn {
+	0% {
+		right: -470px;
+	}
+
+	100% {
+		right: 0;
+	}
+}
+
+.hideAppointmentBookingPartBtn {
+	padding: 20px;
+	width: 50px;
+	cursor: pointer;
+}
+
+.progressBar {
+	width: 100%;
+	height: 3px;
+	background-color: #7fda8ea2;
+}
+
+.progress {
+	width: 60%;
+	height: 3px;
+	background: #187C29;
+}
+
+.monthControll {
+	padding: 10px 20px;
+	text-align: center;
+}
+
+.calenderMonth {
+	font-size: 25px;
+	padding: 10px;
+	width: calc(100% - 20px);
+}
+
+.calender-content {
+	display: grid;
+	grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
+	place-items: center;
+	row-gap: 5px;
+	padding: 20px;
+	text-align: center;
+	width: 100%;
+	font-size: 1rem;
+	border: 1px solid rgb(200, 200, 200);
+	border-radius: 20px;
+	margin: auto;
+	width: 350px;
+}
+
+.calender-day {
+	text-align: center;
+	border-radius: 10px;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #000;
+	cursor: pointer;
+	transition: background-color 0.5s;
+}
+
+.calender-day:hover {
+	background: #dfdfdf;
+}
+
+.calender-day.disabled {
+	color: #aaa;
+	cursor: not-allowed;
+}
+
+.calender-day.current {
+	background-color: #f3f9fe;
+	color: #70b0e8;
+}
+
+.calender-day.active {
+	background-color: #187C29;
+	color: #fff;
+}
+
+.calender-day.today {
+	border: 1px solid#dfdfdf;
+	color: #000;
+}
+
+.date {
+	max-width: 45%;
+}
+
+.date h1 {
+	font-size: 10rem;
+	color: #70b0e888;
+}
+
+.date h3 {
+	position: relative;
+	z-index: 2;
+	font-size: 3rem;
+	margin-top: -65px;
+	text-shadow: -2px -2px 8px #187C29;
+}
+
+.date h2 {
+	font-size: 4rem;
+	line-height: 4rem;
+}
+
+.date h2:nth-of-type(1) {
+	margin-top: 50px;
+}
+
+.date p {
+	margin: 20px 0;
+	font-weight: 300;
+	font-size: 1.2rem;
+}
+
+.date button {
+	padding: 15px 25px;
+	border-radius: 50rem;
+	border: none;
+	cursor: pointer;
+	color: #fff;
+	margin-right: 20px;
+}
+
+.date button:nth-of-type(1) {
+	background-color: #9ba6b6;
+}
+
+.date button:nth-of-type(2) {
+	background-color: #187C29;
+}
+
+img {
+	width: 10px;
+	padding-top: 15px;
+	cursor: pointer;
+}
+
+.goToPayment,
+.detailSubmitBtn {
+	width: 50%;
+	text-align: center;
+	text-decoration: none;
+	font-size: 15px;
+	font-weight: bold;
+	color: white;
+	background: #187C29;
+	padding: 15px 20px;
+	border-radius: 10px;
+	cursor: pointer;
+	margin: auto;
+	margin-top:20px;
+}
+
+.timeSlots {
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	padding: 20px 50px;
+	text-align: center;
+}
+
+.slot {
+	padding: 10px 0px;
+	font-size: 14px;
+	margin: 8px;
+	border: 1px solid rgb(192, 192, 192);
+	border-radius: 10px;
+	width: 42%;
+}
+
+.slot:hover {
+	background: rgb(207, 207, 207);
+	cursor: pointer;
+}
+
+.thankyouPage h1 {
+	font-size: 18px;
+	text-align: center;
+	padding: 50px 20px;
+}
+
+.thankyouPage .progress {
+	width: 100%;
+}
+
+.submitForm {
+	text-align: center;
+	text-decoration: none;
+	font-size: 15px;
+	font-weight: bold;
+	color: white;
+	background: #187C29;
+	padding: 12px 20px;
+	border-radius: 10px;
+	cursor: pointer;
+	margin: auto;
+}
+.detailForm lightning-input{
+	margin: 0px 0px 10px 0px;
+	padding:2px;
+}
+
+.error {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+    margin: 10px auto;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+}
+
+.danger {
+    border-left-color: #d9534f;
+    /* Left side border color */
+    background-color: rgba(217, 83, 79, 0.1);
+    /*Same color as the left border with reduced alpha to 0.1*/
+}
+
+.danger strong{
+    color:#d9534f;
+  }
+
+/* loader scree */
+  .lds-ring {
+	display: inline-block;
+	position: relative;
+	width: 80px;
+	height: 80px;
+  }
+  .lds-ring div {
+	box-sizing: border-box;
+	display: block;
+	position: absolute;
+	width: 64px;
+	height: 64px;
+	margin: 8px;
+	border: 8px solid #fff;
+	border-radius: 50%;
+	animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	border-color: #fff transparent transparent transparent;
+  }
+  .lds-ring div:nth-child(1) {
+	animation-delay: -0.45s;
+  }
+  .lds-ring div:nth-child(2) {
+	animation-delay: -0.3s;
+  }
+  .lds-ring div:nth-child(3) {
+	animation-delay: -0.15s;
+  }
+  @keyframes lds-ring {
+	0% {
+	  transform: rotate(0deg);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
+  }
+
+
+  
+@media screen and (max-width: 715px) {
+	.calenderContent{
+		padding-bottom: 60px;
+	}
+}

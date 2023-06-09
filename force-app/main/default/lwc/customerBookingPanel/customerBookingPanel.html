@@ -1,0 +1,945 @@
+<template>
+	<div class="shadowOverlay">qwerty</div>
+
+
+	<template if:true={showAddBooking}>
+		<c-add-booking onhideaddbooking={hideAddBooking} text-language={textLanguage} account-id={accountId}
+			onaddedbooking={getappointments}></c-add-booking>
+	</template>
+
+	<template if:true={showCase}>
+		<!-- Modal/Popup Box LWC starts here -->
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+			aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<!-- Modal/Popup Box LWC header here -->
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small" onclick={handleHideCase}></lightning-icon>
+                        <span class="slds-assistive-text">{label.Close}</span>
+                    </button>
+					<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{label.Contact_Us}</h2>
+				</header>
+				<!-- Modal/Popup Box LWC body starts here -->
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+					<div>
+						<div class="contactUsError"
+							style="display:none;width: 95%;background-color: #ffffff;padding: 12px 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;margin: 10px auto;font-family: 'Open Sans', sans-serif;font-size: 16px;border-left-color: #d9534f;background-color: rgba(217, 83, 79, 0.1);">
+							<strong style="color:#d9534f;">{label.Error} !</strong> - <span class="contactUsErrorMsg">
+                               {label.All_fields_are_required}</span>
+						</div>
+						<div class="slds-p-around_medium lgc-bg">
+							<lightning-input type="text" label={label.FullName} class="username" maxlength="200">
+							</lightning-input>
+						</div>
+						<div class="slds-p-around_medium lgc-bg">
+							<lightning-input type="text" label={label.PleaseEnterYourEmail} class="useremail">
+							</lightning-input>
+						</div>
+						<div class="slds-p-around_medium lgc-bg">
+							<lightning-textarea type="text" label={label.Description} class="usersubject"
+								max-length="500">
+							</lightning-textarea>
+						</div>
+					</div>
+				</div>
+				<!-- Modal/Popup Box LWC footer starts here -->
+				<footer class="slds-modal__footer">
+					<div class="contactUsLoader"
+						style="display: none;margin-top: 15px; margin-left: 48%; position: absolute;">
+						<div class="demo-only demo-only_viewport">
+							<div role="status" class="slds-spinner slds-spinner_medium">
+								<span class="slds-assistive-text">{label.loading}</span>
+								<div class="slds-spinner__dot-a"></div>
+								<div class="slds-spinner__dot-b"></div>
+							</div>
+						</div>
+					</div>
+					<button class="slds-button slds-button_neutral contactUscontolls" onclick={handleHideCase}
+                        title="Cancel" style="color: black; font-weight: bold;">{label.Cancel}</button>
+					<button class="slds-button slds-button_brand contactUsSubmitBtn contactUscontolls"
+                        onclick={handleSubmitCase} title="Submit"
+                        style="background-color: #187C29;font-weight: bold;">{label.Submit}</button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+	<template if:true={customerBookingVisibility}>
+		<!-- Modal/Popup Box LWC starts here -->
+		<template if:true={ratingForm}>
+			<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+				aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open"
+				style="    background: rgba(0,0,0,0.5)">
+				<div class="slds-modal__container">
+					<!-- Modal/Popup Box LWC header here -->
+					<header class="slds-modal__header">
+						<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                            title="Close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+						<h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">
+							{label.Share_your_Feedback}
+						</h2>
+					</header>
+					<!-- Modal/Popup Box LWC body starts here -->
+					<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+						<div>
+							<div class="Error"
+								style="display:none;width: 95%;background-color: #ffffff;padding: 12px 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;margin: 10px auto;font-family: 'Open Sans', sans-serif;font-size: 16px;border-left-color: #d9534f;background-color: rgba(217, 83, 79, 0.1);">
+								<strong style="color:#d9534f;">{label.Error} !</strong> - <span class="ErrorMsg">
+                                    {label.All_fields_are_required}</span>
+							</div>
+							<div class="slds-p-around_medium lgc-bg">
+								<h1>{label.How_much_do_you_rate_our_service} *</h1>
+								<div class="rate1">
+									<label for="star15" title="text" data-value="1"
+                                        onclick={serviceRatingChanged}>★</label>
+									<label for="star14" title="text" data-value="2"
+                                        onclick={serviceRatingChanged}>★</label>
+									<label for="star13" title="text" data-value="3"
+                                        onclick={serviceRatingChanged}>★</label>
+									<label for="star12" title="text" data-value="4"
+                                        onclick={serviceRatingChanged}>★</label>
+									<label for="star11" title="text" data-value="5"
+                                        onclick={serviceRatingChanged}>★</label>
+								</div>
+							</div>
+
+							<div class="slds-p-around_medium lgc-bg">
+								<h1>{label.How_much_do_you_rate_our_executive} *</h1>
+								<div class="rate2">
+									<label for="star15" title="text" data-value="1"
+                                        onclick={washerRatingChanged}>★</label>
+									<label for="star14" title="text" data-value="2"
+                                        onclick={washerRatingChanged}>★</label>
+									<label for="star13" title="text" data-value="3"
+                                        onclick={washerRatingChanged}>★</label>
+									<label for="star12" title="text" data-value="4"
+                                        onclick={washerRatingChanged}>★</label>
+									<label for="star11" title="text" data-value="5"
+                                        onclick={washerRatingChanged}>★</label>
+								</div>
+							</div>
+
+							<div class="slds-p-around_medium lgc-bg">
+								<lightning-textarea label={label.Tell_us_more_about_your_experience}>
+								</lightning-textarea>
+							</div>
+
+						</div>
+					</div>
+					<!-- Modal/Popup Box LWC footer starts here -->
+					<footer class="slds-modal__footer">
+						<div class="contactUsLoader"
+							style="display: none;margin-top: 15px; margin-left: 48%; position: absolute;">
+							<div class="demo-only demo-only_viewport">
+								<div role="status" class="slds-spinner slds-spinner_medium">
+									<span class="slds-assistive-text">{label.loading}</span>
+									<div class="slds-spinner__dot-a"></div>
+									<div class="slds-spinner__dot-b"></div>
+								</div>
+							</div>
+						</div>
+						<button class="slds-button slds-button_neutral contactUscontolls" onclick={closeModal}
+                            title="Cancel" style="color: black; font-weight: bold;">{label.Cancel}</button>
+						<button class="slds-button slds-button_brand contactUsSubmitBtn contactUscontolls"
+                            onclick={submitRating} title="Submit"
+                            style="background-color: #187C29;font-weight: bold;    color: white;">{label.Submit}</button>
+					</footer>
+				</div>
+			</section>
+		</template>
+
+		<div class="customerBookingPanel" style="width:100%;transition: all 0.8s;">
+			<div class="customerBooking"
+				style="height:100vh;position:relative;transition: all 0.8s ease;overflow: hidden;background:transparent;font-family: 'Roboto', sans-serif;overflow-x: hidden;margin-top: 10px;overflow-y: auto;">
+
+				<div class="buttons">
+					<lightning-icon icon-name="utility:rows" size="small" class="mobileOptionsIcon" style="margin: 5px;"
+						onclick={showMobileViewOptionBtns}></lightning-icon>
+					<!--More icon please visit : https://www.lightningdesignsystem.com/icons/ -->
+					<div class="mobileViewOptionBtnsOverlay" onclick={hideMobileViewOptionBtns}></div>
+					<div class="mobileViewOptionBtns">
+						<button onclick={redirectToHomeSite}  style="border: none; color: #187C29; font-size: 15px; font-weight: 700; padding: 10px 20px 5px 20px;background: white;
+                        right: 360px">{label.Home}</button>
+						<button onclick={handleAddBooking} style="border: none; color: #187C29; font-size: 15px; font-weight: 700; padding: 10px 20px 5px 20px;background: white;
+                            right: 245px">{label.addBooking}</button>
+
+						<button onclick={handleLogOut} style="border: none; color: #187C29; font-size: 15px; font-weight: 700; padding: 10px 20px 5px 20px;background: white;
+                            right: 165px">{label.logOutButton}</button>
+					</div>
+					<div class="languageConverter" style="font-weight: 600px;">
+						<select name="languages" id="languages"
+                            style="background-color: white;cursor: pointer;width:150px;border:1px solid #187C29;color:#187C29;font-weight:bold;padding:8px 20px;border-radius: 5px;margin-right: 1rem;"
+                            onchange={languageChanged}>
+                            <option value="en_US">English (CHF)</option>
+                            <option value="fr_CH">French (CHF)</option>
+                            <option value="de_CH">German (CHF)</option>
+                            <option value="fr_CH">French (EUR)</option>
+                        </select>
+					</div>
+				</div>
+
+				<div class="header flex" style="background: white;margin-top:30px">
+					<div style="width:250px;    margin-left: 5rem;">
+						<img class="logo" src={logo} alt="" style="width:100%; padding:10px;">
+                    </div>
+					</div>
+
+					<div class="welcomeMessage">{label.welcomeToDashBoard}</div>
+
+
+
+
+					<div class="currentBookingDetails"
+						style="width: fit-content;;max-width:90%;padding:2%;margin:20px auto;">
+						<template for:each={lastBooking} for:item="lastBooking">
+							<div key={Id}
+								style="width:100%;border-radius:5px;box-shadow: rgb(0 0 0 / 24%) 0px 0px 2px;margin:20px;padding:20px">
+								<div
+									style="display: flex; width: 100%;max-width: 500px; justify-content: center;margin: auto;">
+									<div>
+										<img src={lastBooking.WorkType.icon__c} alt="" style="width: 150px">
+                                </div>
+										<div style="padding: 2%;">
+											<h1 style="font-size: 16px;width: max-content;">{label.Customer_Name} :
+												{lastBooking.Account.Name}</h1>
+											<h1 style="font-size: 16px;width: max-content;">Service :
+												{lastBooking.WorkType.Name}</h1>
+											<h1 style="font-size: 16px;width: max-content;">Date :
+												{lastBooking.CreatedDate}
+											</h1>
+											<h1 style="font-size: 16px;width: max-content;">{label.Billing_Amount} :
+												{lastBooking.WorkType.Currency__c}
+												{lastBooking.totalPrice__c}</h1>
+										</div>
+									</div>
+									<template if:true={addOnsVisibility}>
+										<h2 class="addOns"
+											style="margin-top:20px;margin-bottom:20px;text-align: center;font-size: 16px;">
+											{label.Add_Ons_Selected}</h2>
+									</template>
+									<div style="display: flex;justify-content: space-evenly;flex-wrap: wrap;">
+										<template for:each={lastBooking.CustomerOrders__r} for:item="CustomerOrders">
+											<ul key={Id}
+												style="box-shadow: rgb(0 0 0 / 24%) 0px 0px 2px;width:fit-content;padding:15px;margin:5px;border-radius:5px;">
+												<li style="font-size: 15px;">{label.customerName} :
+													{CustomerOrders.Name}</li>
+												<li style="font-size: 15px;">{label.Quantity} :
+													{CustomerOrders.Quantity__c}</li>
+											</ul>
+										</template>
+									</div>
+									<div class="submitbutton">
+										<div data-paymentdata={lastBooking.PaymentData__c}
+											data-currentbookingaccountid={lastBooking.Account.Id}
+											data-currentbookingworktypename={lastBooking.WorkType.Name}
+											data-currentbookingtotalpricec={lastBooking.totalPrice__c}
+											data-currentbookinglistofaddons={lastBooking.CustomerOrders__r}
+											data-currentbookinglistofaddonsstr={lastBooking.CustomerOrders__r_str}
+											style="width:200px;text-align: center;text-decoration: none;font-size: 15px;font-weight:bold;color: white;background: #187C29;padding: 10px 20px;border-radius: 5px;cursor: pointer;border:none;margin: 20px auto;"
+											onclick={proceedToPaymentForCustomerQuote}>{label.Confirm_Booking}
+										</div>
+									</div>
+								</div>
+						</template>
+					</div>
+					<div class="filterContainer">
+						<template if:true={showFilterBy}>
+							<div class="filterBy">
+								<template if:true={showStatus}>
+									<select name="statusfilter"
+                                    style="background-color: white;cursor: pointer;width:150px;border:1px solid #187C29;color:#187C29;font-weight:bold;padding:8px 20px;border-radius: 5px;margin: 1rem;"
+                                    onchange={handleStatus}>
+                                    <option value="All">{label.All}</option>
+                                    <option value="Scheduled">{label.Scheduled}</option>
+                                    <option value="Dispatched">{label.Dispatched}</option>
+                                    <option value="In Progress">{label.InProgress}</option>
+                                    <option value="Cannot Complete">{label.CannotComplete}</option>
+                                    <option value="Completed">{label.Completed}</option>
+                                    <option value="Canceled">{label.Canceled}</option>
+                                </select>
+								</template>
+								<template if:true={showServiceDate}>
+									<input type="date"
+                                    style="background-color: white;cursor: pointer;width:150px;border:1px solid #187C29;color:#187C29;font-weight:bold;padding:8px 20px;border-radius: 5px;margin: 1rem;"
+                                    name="ServiceDate" onchange={handledate}></input>
+								</template>
+								<template if:true={showServiceType}>
+									<select name="statusfilter"
+                                    style="background-color: white;cursor: pointer;width:150px;border:1px solid #187C29;color:#187C29;font-weight:bold;padding:8px 20px;border-radius: 5px;margin: 1rem;"
+                                    onchange={handleServiceType}>
+                                    <option value="none">{label.none}</option>
+                                    <option value="All">{label.All}</option>
+                                    <option value="Just Inside">{label.JustInside}</option>
+                                    <option value="Just Outside">{label.JustOutside}</option>
+                                    <option value="Full">{label.Full}</option>
+                                    <option value="Customized">{label.Customized}</option>
+                                </select>
+								</template>
+								<template if:true={showCarYear}>
+									<select name="statusfilter"
+                                    style="background-color: white;cursor: pointer;width:150px;border:1px solid #187C29;color:#187C29;font-weight:bold;padding:8px 20px;border-radius: 5px;margin: 1rem;"
+                                    onchange={handleCarYear}>
+                                    <option value="All">{label.All}</option>
+                                    <template for:each={yearList} for:item="year">
+
+                                        <option key={year.Id}>{year}</option>
+
+
+                                    </template>
+                                </select>
+
+								</template>
+							</div>
+						</template>
+						<div class="filterFields">
+							<select name="filters"
+                            style="background-color: white;cursor: pointer;width:150px;border:1px solid #187C29;color:#187C29;font-weight:bold;padding:8px 20px;border-radius: 5px;margin: 1rem;"
+                            onchange={filterChange}>
+                            <option value="" disabled selected>{label.Filter}</option>
+                            <option value="All">{label.All}</option>
+                            <option value="Status">{label.Status}</option>
+                            <option value="SchedStartTime">{label.ServiceDate}</option>
+                            <option value="Name">{label.TypeOfService}</option>
+                            <option value="Car_Year__c">{label.CarYear}</option>
+                        </select>
+						</div>
+						<div>
+							<select name="filters"
+                            style="background-color: white;cursor: pointer;width:150px;border:1px solid #187C29;color:#187C29;font-weight:bold;padding:8px 20px;border-radius: 5px;margin: 1rem;"
+                            onchange={handleViewChange}>
+                            <option value="Table">{label.TableView}</option>
+                            <option value="Card">{label.CardView}</option>
+                        </select>
+						</div>
+					</div>
+
+					<template if:true={showTableView}>
+						<c-list-view-customer-portal old-bookings={oldBookings} pending-booking={pendingBooking}
+							text-language={textLanguage} onopencancelmodal={showConfirmMessage}
+							onopeneditmodal={handleEditBooking} onopenaddrating={addRating} get-labels-value={label}>
+						</c-list-view-customer-portal>
+					</template>
+
+					<!-- columns to show the pending and previous bookings -->
+					<template if:false={showTableView}>
+
+						<div class="slds-tabs_default">
+							<ul class="slds-tabs_default__nav" role="tablist"
+								style="width: fit-content;border-bottom-color: transparent;">
+								<li style="left: 2vh;" class="slds-tabs_default__item slds-is-active active-tab" title="Pending Booking"
+									role="presentation" onclick={openTab} data-id="tab-1">
+									<div class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true"
+										aria-controls="tab-default-1" data-id="tab-default-1__item">
+										{label.pendingBooking}</div>
+								</li>
+								<li style="left: 4vh;" class="slds-tabs_default__item inactive-tab" title="Previous Booking"
+									role="presentation" onclick={openTab} data-id="tab-2">
+									<div class="slds-tabs_default__link" role="tab" tabindex="-1" aria-selected="false"
+										aria-controls="tab-default-2" data-id="tab-default-2__item">
+										{label.Previous_Bookings}</div>
+								</li>
+							</ul>
+							<div data-id="tab-default-1" class="slds-tabs_default__content slds-show" role="tabpanel"
+								aria-labelledby="tab-default-1__item">
+
+								<div style="overflow-x: auto;border-radius: 15px;max-height: 50vh;white-space: nowrap;" class="pendingBooking slds-m-around_x-small">
+									<!-- <div
+                                    style="text-align: center;font-size: 25px;font-family: Roboto, sans-serif;font-weight: bold;color: black;margin: 2rem;">
+                                    {label.pendingBooking}</div> -->
+									<div class="allBookings slds-grid slds-wrap"
+										style="display: flex;margin: auto;flex-wrap: wrap;justify-content: space-evenly;">
+										<template for:each={pendingBooking} for:item="pendingBookings">
+											<div  class="booking slds-col slds-size_1-of-3" key={pendingBookings.Id}
+												style="min-height: 48px;padding:20px 40px;margin:20px 15px;border-radius:5px;min-width:10rem;overflow:hidden">
+												<img src={pendingBookings.icon} alt=""
+                                                style="width: 200px; margin-bottom: 20px;">
+
+												<table>
+													<tbody>
+														<tr>
+															<template if:true={pendingBookings.customerName}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.customerName}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{pendingBookings.customerName}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={pendingBookings.serviceType}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.typeOfService}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{pendingBookings.serviceType}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={pendingBookings.status}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.status}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{pendingBookings.status}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={pendingBookings.date}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.serviceDate}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{pendingBookings.date}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={pendingBookings.timeSlot}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.timeSlot}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{pendingBookings.timeSlot}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={pendingBookings.carPlate}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.carPlate}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{pendingBookings.carPlate}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={pendingBookings.carModel}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.carModel}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{pendingBookings.carModel}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={pendingBookings.carYear}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.carYear}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{pendingBookings.carYear}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={pendingBookings.carWasher}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.carWasher}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{pendingBookings.carWasher}</td>
+															</template>
+														</tr>
+													</tbody>
+												</table>
+												<div style="display:flex;">
+													<div class="button" data-id={pendingBookings.Id}
+														style="width:80px;font-size: 15px; font-weight: bold; color: white; background: rgb(24, 124, 41); text-align: center; margin-top: 20px; padding: 10px; border-radius: 5px;cursor: pointer; "
+														onclick={handleEditBooking}>
+														{label.Edit}</div>
+													<div class="button" data-workorder={pendingBookings.Id}
+														style="width:80px; margin-left:20px; font-size: 15px; font-weight: bold; color: rgb(24, 124, 41); background: white; text-align: center; margin-top: 20px; padding: 10px; border:1px solid rgb(24, 124, 41); border-radius: 5px;cursor: pointer; "
+														onclick={showConfirmMessage}>
+														{label.Cancel}</div>
+												</div>
+											</div>
+										</template>
+									</div>
+								</div>
+
+							</div>
+
+
+							<div data-id="tab-default-2" class="slds-tabs_default__content slds-hide" role="tabpanel"
+								aria-labelledby="tab-default-2__item">
+								<div style="    overflow-x: auto;
+    border-radius: 15px;
+    max-height: 50vh;    white-space: nowrap;
+" class="previousBookings slds-m-around_x-small">
+									<!-- <div
+                                    style="text-align: center;font-size: 25px;font-family: Roboto, sans-serif;font-weight: bold;color: black;margin: 2rem;">
+                                    {label.Previous_Bookings}</div> -->
+									<div class="allBookings slds-grid slds-wrap"
+										style="display: flex;margin: auto;flex-wrap: wrap;justify-content: space-evenly;">
+										<template for:each={oldBookings} for:item="oldBooking">
+											<div class="booking slds-col slds-size_1-of-3" key={oldBooking.Id}
+												style="min-height: 48px;width:unset;padding:20px 40px;margin:20px 15px;border-radius:5px;min-width:10rem;overflow:hidden">
+												<img src={oldBooking.icon} alt=""
+                                                style="width: 200px; margin-bottom: 20px;">
+
+												<table>
+													<tbody>
+														<tr>
+															<template if:true={oldBooking.customerName}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.customerName}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{oldBooking.customerName}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={oldBooking.serviceType}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.typeOfService}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{oldBooking.serviceType}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={oldBooking.status}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.status}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{oldBooking.status}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={oldBooking.date}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.serviceDate}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{oldBooking.date}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={oldBooking.timeSlot}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.timeSlot}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{oldBooking.timeSlot}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={oldBooking.carPlate}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.carPlate}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{oldBooking.carPlate}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={oldBooking.carModel}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.carModel}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{oldBooking.carModel}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={oldBooking.carYear}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.carYear}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{oldBooking.carYear}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:true={oldBooking.carWasher}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.carWasher}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	{oldBooking.carWasher}</td>
+															</template>
+														</tr>
+														<tr>
+															<template if:false={oldBooking.showRatingButton}>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;font-weight:600;">
+																	{label.rating}</td>
+																<td
+																	style="font-family: Roboto, sans-serif;font-size: 15px;">
+																	<img src={oldBooking.rating} alt="rating" style="height: 1rem;
+    width: 5rem;
+    margin: 0px;
+    padding: 0px;">
+                                                            </td>
+															</template>
+														</tr>
+													</tbody>
+												</table>
+												<template if:true={oldBooking.showRatingButton}>
+													<div class="button" data-workorder={oldBooking.Id}
+														style="font-size: 15px; font-weight: bold; color: white; background: rgb(24, 124, 41); text-align: center; margin-top: 20px; padding: 10px; border-radius: 5px;cursor: pointer; "
+														onclick={addRating}>
+														{label.RateService}</div>
+												</template>
+
+
+											</div>
+										</template>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</template>
+
+
+
+					<template if:true={noBookingsVisibility}>
+						<p class="noBookings" style="padding: 20px;text-align: center;">{label.No_Previous_Bookings}
+						</p>
+					</template>
+
+					<br><br><br><br>
+            </div>
+				</div>
+	</template>
+	<template if:true={error404Visibility}>
+		<div class="error404">
+			<h1 style="text-align: center;font-size: 40px;">404</h1>
+			<p style="text-align: center;">{label.You_entered_an_incorrect_URL}</p>
+		</div>
+	</template>
+
+	<template if:true={paymentSectionVisibility}>
+		<c-select-payment-method text-language={textLanguage} onhidepayment={hidePayment}
+			onshowbankpayment={showBankPayment} onshowcardpayment={showCardPayment}></c-select-payment-method>
+	</template>
+
+	<template if:true={cardPaymentVisibility}>
+		<div class="cardPaymentss">
+			<c-card-payment text-language={textLanguage} onhidecardpayment={hideCardPayment}
+				onpaymentsuccessfull={paymentSuccessfull}>
+			</c-card-payment>
+		</div>
+	</template>
+
+	<template if:true={paymentSuccessfullPageVisibility}>
+		<c-payment-successful-page text-language={textLanguage}></c-payment-successful-page>
+	</template>
+
+	<template if:true={bankPaymentVisibility}>
+		<div class="cardPaymentss">
+			<c-bank-payment onhidebankpayment={hideBankPayment}></c-bank-payment>
+		</div>
+	</template>
+
+	<template if:true={showSpinner}>
+		<div class="spinner">
+			<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+		</div>
+	</template>
+
+
+
+	<!-- This modal appear when the editing is successful -->
+	<template if:true={successfulEditModal}>
+		<div class="custom-modal">
+			<section role="dialog" class="slds-modal slds-fade-in-open">
+				<div class="slds-modal__container">
+					<header class="slds-modal__header">
+						<h2 class="slds-text-heading_medium slds-hyphenate">{label.ThankYou}</h2>
+					</header>
+					<div class="slds-modal__content slds-p-around_medium">
+
+						<div class="success-page">
+
+							<div
+								style="width: fit-content; font-size: 60px; border: 5px solid green; border-radius: 100%; margin: auto; margin-top: 25px; padding: 5px 30px; color: green; ">
+								&check;</div>
+							<h2
+								style="font-weight: 900; font-size: larger; text-align: center;color: #187C29;padding: 15px;font-size: 20px;">
+								{label.bookingRescheduled}</h2>
+
+							<p
+								style="font-size: 17px; width: 90%; margin: auto; padding: 10px; font-weight: 500; text-align:center;">
+								{label.youBookingHasBeenRescheduled}</p>
+
+							<div class="washerdetails"
+								style="width: 90%; margin: auto; border: 1px solid rgb(200,200,200); padding: 20px 20px; border-radius: 5px; text-align: center;margin-top:50px">
+								<h1 style="font-size: 16px;">{label.carWashAgentDetails}</h1>
+								<div class="image">
+									<img src={washerIcon} alt="" style="width:200px">
+                                </div>
+									<div class="details">
+										<h1 style="font-size: 20px;">
+											{assignedResource}
+										</h1>
+										<img src={rating} alt="" style="height: auto;width: 25%;margin: 0px;padding: 0px;">
+                                </div>
+									</div>
+
+								</div>
+
+
+							</div>
+							<footer class="slds-modal__footer">
+								<lightning-button variant="brand" label="Close" title="CLose"
+									class="slds-m-right_small saveButton" onclick={closeSuccessfulEditModal}>
+								</lightning-button>
+							</footer>
+						</div>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+		</div>
+	</template>
+
+
+	<!-- Modal to edit the service Date and time slot -->
+	<template if:true={ModalCalenderForServiceDate}>
+		<div class="custom-modal">
+			<section role="dialog" class="slds-modal slds-fade-in-open">
+				<div class="slds-modal__container">
+					<header class="slds-modal__header">
+						<span class="slds-modal__close">
+                            <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="close"
+                                onclick={openEditModal}></lightning-icon>
+                        </span>
+						<h2 class="slds-text-heading_medium slds-hyphenate">{label.EditServiceDate}</h2>
+					</header>
+					<div class="slds-modal__content slds-p-around_medium">
+						<!-- Calender Part start here-->
+
+						<div class="calenderContent">
+							<div class="monthControll" style="display: flex;justify-content: space-around;">
+								<div class="leftShift" onclick={reduceMonth}><img src={leftAngle} alt=""></div>
+									<div class="calenderMonth"><span class="month">February</span><span
+                                        style="margin-left:10px;" class="year">2022</span></div>
+									<div class="rightShift" onclick={addMonth}><img src={rightAngle} alt=""></div>
+									</div>
+									<div class="calender-content">
+										<span><b>M</b></span>
+										<span><b>T</b></span>
+										<span><b>W</b></span>
+										<span><b>Th</b></span>
+										<span><b>F</b></span>
+										<span><b>S</b></span>
+										<span><b>S</b></span>
+
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day" onclick={selectDate}></div>
+										<div class="calender-day extras" onclick={selectDate}></div>
+										<div class="calender-day extras" onclick={selectDate}></div>
+										<div class="calender-day extras" onclick={selectDate}></div>
+										<div class="calender-day extras" onclick={selectDate}></div>
+										<div class="calender-day extras" onclick={selectDate}></div>
+										<div class="calender-day extras" onclick={selectDate}></div>
+										<div class="calender-day extras" onclick={selectDate}></div>
+									</div>
+									<div class="loader"
+										style="display:none;position: absolute; top: calc(50vh - (60vh/2)); background: white; opacity: 0.5; width: 80%;height: 55vh; padding-top: 250px;left: 10%;">
+										<div class="demo-only demo-only_viewport" style="height:6rem;position:relative">
+											<div role="status" class="slds-spinner slds-spinner_medium">
+												<span class="slds-assistive-text">{label.loading}</span>
+												<div class="slds-spinner__dot-a"></div>
+												<div class="slds-spinner__dot-b"></div>
+											</div>
+										</div>
+									</div>
+									<div class="noTimeSlots" style="display:none;padding: 20px 65px;">
+										<p>{label.slotErrorsinfo}
+											: </p>
+										<ul style="padding: 10px 0px 10px 10px;">
+											<li>1] {label.slotFirstError}</li>
+											<li style="padding:5px 0px">2] {label.slotSecondError}
+											</li>
+											<li>3] {label.slotThirdError}</li>
+										</ul>
+									</div>
+									<div class="timeSlots" style="padding:20px;text-align: center;">
+										<template for:each={timeSlots} for:item="timeSlot">
+											<div class="slot" key={Id} onclick={btnClicked}>{timeSlot}</div>
+										</template>
+									</div>
+
+									<div class="Error"
+										style="display:none;width: 85%;background-color: #ffffff;padding: 12px 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;margin: 10px auto;font-family: 'Open Sans', sans-serif;font-size: 16px;border-left-color: #d9534f;background-color: rgba(217, 83, 79, 0.1);">
+										<strong style="color:#d9534f;">{label.Error}</strong> -
+										<span class="errorMsg"></span>
+									</div>
+
+									<div class="goToPayment" onclick={goToPayment}
+										style="display: none;font-family: Roboto, sans-serif;">
+									</div>
+								</div>
+
+
+
+							</div>
+							<footer class="slds-modal__footer">
+								<lightning-button label="Cancel" title="Cancel" class="slds-m-right_small cancelButton"
+									onclick={openEditModal}></lightning-button>
+								<lightning-button variant="brand" label="Save" title="Save" class="saveButton"
+									onclick={updateDateTime}>
+								</lightning-button>
+							</footer>
+						</div>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+		</div>
+	</template>
+
+
+	<!-- Modal to edit the detail of the record before confirming the booking -->
+	<template if:true={showEditForm}>
+		<div class="custom-modal">
+			<section role="dialog" class="slds-modal slds-fade-in-open">
+				<div class="slds-modal__container">
+					<header class="slds-modal__header">
+						<span class="slds-modal__close">
+                            <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="close"
+                                onclick={hideEditForm}></lightning-icon>
+                        </span>
+						<h2 class="slds-text-heading_medium slds-hyphenate">{label.EditDetail}</h2>
+					</header>
+					<div class="slds-modal__content slds-p-around_medium"
+							style="text-align:center; font-size: 16px;font-family: Roboto, sans-serif;">
+						
+							<div class="slds-grid slds-wrap slds-m-vertical_x-small">
+								<div class="slds-size_1-of-2" style="display: flex;"> {label.service_Date_and_Time} :</div>
+								<div class="slds-size_1-of-2"
+									style="width: 16em; display:flex; border:1px solid; border-radius:5px;padding: 3px 0px 3px 14px;">
+									{editServiceDate}<br>
+									{label.TimeSlot} : {editSlotTime}
+									<lightning-icon icon-name="utility:edit" variant="success" alternative-text="Edit"
+										title="Edit Record" size="small" onclick={openModalCalender}
+										style="margin-left: 2rem;margin-top: 0.7em;cursor: pointer;"></lightning-icon>
+								</div>
+								</div>
+
+							<div class="slds-grid slds-wrap slds-m-vertical_x-small">
+								<div class="slds-size_1-of-2" style="display: flex;">{label.carPlate} :</div>
+								<div class="slds-size_1-of-2">
+									<lightning-input 
+										type="text" style="width: fit-content;" variant="label-hidden" value={editCarPlate}
+										name="Car Plate" onchange={changecarplate}>
+									</lightning-input>
+								</div>
+								</div>
+							<div class="slds-grid slds-wrap slds-m-vertical_x-small">
+								<div class="slds-size_1-of-2" style="display: flex;"> {label.carModel} :</div>
+								<div class="slds-size_1-of-2">
+									<lightning-input type="text"
+									style="width: fit-content;" variant="label-hidden" value={editCarModel}
+									name="Car Model" onchange={changecarmodel}></lightning-input>
+								</div>
+								</div>
+							<div class="slds-grid slds-wrap slds-m-vertical_x-small">
+								<div class="slds-size_1-of-2" style="display: flex;"> {label.carYear} :</div>
+								<div class="slds-size_1-of-2">
+									<lightning-input type="text"
+									style="width: fit-content;" variant="label-hidden" value={editCarYear} name="Car Year" onchange={changecaryear}>
+									</lightning-input>
+								</div>
+							</div>
+						
+					</div>
+					<footer class="slds-modal__footer">
+						<lightning-button label="Cancel" title="Cancel" class="slds-m-right_small cancelButton"
+							onclick={hideEditForm}></lightning-button>
+						<lightning-button variant="brand" label="Save" title="Save" class="saveButton"
+							onclick={editRecordDetail}>
+						</lightning-button>
+					</footer>
+				</div>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+		</div>
+
+	</template>
+
+
+	<!-- Modal to show confirmation message before canceling the booking -->
+	<template if:true={confirmMessage}>
+		<div class="custom-modal">
+			<section role="dialog" class="slds-modal slds-fade-in-open">
+				<div class="slds-modal__container">
+					<header class="slds-modal__header">
+						<span class="slds-modal__close">
+                            <lightning-icon onclick={closeConfirmMessage} icon-name="utility:close" variant="inverse"
+                                alternative-text="close" style="cursor:pointer;"></lightning-icon>
+                        </span>
+						<h2 class="slds-text-heading_medium slds-hyphenate">{label.Confirm}</h2>
+					</header>
+					<div class="slds-modal__content slds-p-around_medium"
+						style="text-align:center; font-size: 20px;font-family: Roboto, sans-serif;">
+						{label.doYouWantToCancelThisBooking}
+						<br><button
+                            style="width:80px; font-size: 15px; font-weight: bold; color: white; background: rgb(24, 124, 41); margin-top: 20px; padding: 10px; border-radius: 5px; border:1px solid rgb(24, 124, 41);"
+                            onclick={handleCancel}>{label.Yes}</button>
+						<button
+                            style="width:80px;margin-left:20px; font-size: 15px; font-weight: bold; color: rgb(24, 124, 41); background: white; margin-top: 20px; padding: 10px; border-radius: 5px; border:1px solid rgb(24, 124, 41);"
+                            onclick={closeConfirmMessage}>{label.No}</button>
+					</div>
+				</div>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+		</div>
+	</template>
+
+</template>

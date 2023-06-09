@@ -1,0 +1,60 @@
+.customerType{
+    width:100%;
+    max-width:400px;
+    padding-bottom: 100px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background: white;
+    border-radius: 10px;
+    animation: popup 0.8s;
+    position: absolute;
+    bottom: 0;
+    left: calc(50% - 200px);
+}
+@keyframes popup {
+    0%{
+        bottom: -500px;
+    }
+    100%{
+        bottom: 0;
+    }
+}
+
+h1{
+    font-size: 25px;
+    font-weight: bold;
+    padding:20px 20px;
+}
+.flex{
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.requestQuote,
+.bookNow{
+    border:1px solid rgb(209, 209, 209);
+    border-radius: 10px;
+    margin:5px;
+    padding:30px 0;
+    width:180px;
+    cursor: pointer;
+}
+.requestQuote:hover,
+.bookNow:hover{
+    border:1px solid #187C29;
+}
+.requestQuote img,
+.bookNow img{
+    width:70%;
+}
+
+h2{
+    font-weight: bold;
+    font-size: 16px;
+    padding:15px 0;
+}
+h3{
+    font-weight: 500;
+    font-size: 15px;
+    color:rgb(168, 168, 168);
+}

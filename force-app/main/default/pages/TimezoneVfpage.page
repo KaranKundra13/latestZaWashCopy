@@ -1,0 +1,3 @@
+<apex:page standardController="ServiceAppointment" extensions="displayTimezoneController">
+    <h1>User Timezone: {!userTimezone}</h1>
+</apex:page>

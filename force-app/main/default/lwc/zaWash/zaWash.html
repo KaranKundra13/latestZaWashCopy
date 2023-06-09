@@ -1,0 +1,315 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-16-2022
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+	<!-- <lightning-map map-markers={markers} markers-title="Lunch Gems" selected-marker-value={selectedMarkerValue}
+        options={mapOptions} zoom-level={zoomLevel}
+        style="margin:0;padding:0;position: absolute;width:100%;height:100vh;z-index:0;overflow: hidden;">
+    </lightning-map> -->
+
+	<div class="shadowOverlay"></div>
+	<div class="customerEmail" style="position: absolute;opacity: 0;top:0;left:0;z-index:0;"></div>
+
+	<!-- <iframe data-id="vfFrame" src="https://zawash--sandbox.sandbox.my.salesforce.com/apex/googleMaps"
+        style="margin:0;padding:0;position: absolute;width:100%;height:100vh;z-index:0;overflow: hidden;"></iframe> -->
+
+	<template if:true={showCase}>
+		<!-- Modal/Popup Box LWC starts here -->
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+			aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<!-- Modal/Popup Box LWC header here -->
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small" onclick={handleHideCase}></lightning-icon>
+                        <span class="slds-assistive-text">{label.Close}</label></span>
+                    </button>
+					<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{label.Contact_Us}</h2>
+				</header>
+				<!-- Modal/Popup Box LWC body starts here -->
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+					<div>
+						<div class="contactUsError"
+							style="display:none;width: 95%;background-color: #ffffff;padding: 12px 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;margin: 10px auto;font-family: 'Open Sans', sans-serif;font-size: 16px;border-left-color: #d9534f;background-color: rgba(217, 83, 79, 0.1);">
+							<strong style="color:#d9534f;">{label.Error} !</strong> - <span class="contactUsErrorMsg">
+                                {label.All_fields_are_required}</span>
+						</div>
+						<div class="slds-p-around_medium lgc-bg">
+							<lightning-input type="text" label={label.FullName} class="username" maxlength="200">
+							</lightning-input>
+						</div>
+						<div class="slds-p-around_medium lgc-bg">
+							<lightning-input style="" type="text" label={label.PleaseEnterYourEmail} class="useremail">
+							</lightning-input>
+						</div>
+						<div class="slds-p-around_medium lgc-bg">
+							<lightning-textarea type="text" label={label.Description} class="usersubject"
+								max-length="500">
+							</lightning-textarea>
+						</div>
+					</div>
+				</div>
+				<!-- Modal/Popup Box LWC footer starts here -->
+				<footer class="slds-modal__footer">
+					<div class="contactUsLoader"
+						style="display: none;margin-top: 15px; margin-left: 48%; position: absolute;">
+						<div class="demo-only demo-only_viewport">
+							<div role="status" class="slds-spinner slds-spinner_medium">
+								<span class="slds-assistive-text">{label.loading}</span>
+								<div class="slds-spinner__dot-a"></div>
+								<div class="slds-spinner__dot-b"></div>
+							</div>
+						</div>
+					</div>
+					<button class="slds-button slds-button_neutral contactUscontolls" onclick={handleHideCase}
+                        title="Cancel" style="color: black; font-weight: bold;">{label.Cancel}</button>
+					<button class="slds-button slds-button_brand contactUsSubmitBtn contactUscontolls"
+                        onclick={handleSubmitCase} title="Submit"
+                        style="background-color: #187C29;font-weight: bold;">{label.Submit}</button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+
+
+	<div class="switchConfig"
+		style="display: none; width: 100%; height: 100vh; left: 0px; z-index: 8; position: absolute; background: rgba(0, 0, 0, 0.5);">
+		<div
+			style="padding: 20px 0px; border-radius: 5px; background: white; width: 90%; max-width: 400px; margin: 150px auto auto; box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;">
+			<h1 style="padding: 0px 10px; font-size: 15px; font-weight: 600;">You have selected <b>"{addressForService}"</b> address but
+				current language and currency configration are <b>[{selectedConfigration}]</b>.</h1>
+			<h1 style="padding: 10px; font-size: 15px; font-weight: 600; color: green;">Want to switch to <b>[{suggestedConfigration}]</b> ?
+			</h1>
+			<div style="display:flex;justify-content:space-between">
+				<input type="button" onclick={revertConfig} 
+                style="border: none;background: white;color: green;padding: 10px 30px;margin: 10px 20px;border:1px solid green;border-radius: 5px;font-size: 16px;"
+                value='Cancel' />
+				<input type="button" onclick={saveConfig}
+                style="border: none;background: green;color: white;padding: 10px 30px;margin: 10px 20px;border-radius: 5px;font-size: 16px;"
+                value='Switch' />
+            </div>
+			</div>
+		</div>
+
+
+		<div class="emailPopUp" onclick={hideEmailError}
+			style="display:none;width:100%;height:100vh;left:0;z-index:5;position:absolute;background: rgba(0,0,0,0.5);">
+			<form class="getEmail"
+				style="padding:20px 0px;border-radius:5px;background: white;width: 90%;max-width: 400px;margin: auto;margin-top: 150px;box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;">
+				<div class="emailSectionHide"
+					style="float: right;  margin: -10px 10px; padding: 4px 10px; border-radius: 100px; cursor: pointer; font-weight: 900; font-size: 15px;"
+					onclick={hideEmailPopup}>X</div>
+
+				<br>
+
+				<!-- <lightning-input label={label.Full_Name} class="nameInput" type="text" placeholder={label.Full_Name}
+                required="true" style="display:none;width: 90%;margin-left: 5%;padding: 6px;font-size: 16px;">
+            </lightning-input> -->
+
+
+				<lightning-input label={label.PleaseEnterYourEmail} class="emailInput" type="text"
+					placeholder={label.EnterYourEmailHere}
+					style="width: 90%;margin-left: 5%;padding: 6px;font-size: 16px;    color: black;">
+				</lightning-input>
+
+				<div style="display: none;width: 89%;margin:auto;" class="mobileNoDiv">
+					<lightning-combobox label={label.countryCode} value={selectedCountryCode} class="codeInput"
+						options={countryCodeOptions} onchange={handleCountryCodeChange}
+						style="margin-top: 6px;width: 215px;    color: black;"></lightning-combobox>
+
+					<lightning-input label={label.mobileNo} class="mobileNo carDetailsInput" type="text"
+						onkeydown={appendMobileNo} placeholder='1234567890'
+						style="width: 105%;margin:auto;padding: 6px;font-size: 16px;    color: black;" maxlength="10">
+					</lightning-input>
+				</div>
+
+				<lightning-combobox options={paymenthMethodChoosenValues} label={label.Please_Select_Service_Type}
+					style="width: 90%;margin-left: 5%;padding: 6px;font-size: 16px;color:black" value="One Time"
+					class="EmailPopUpCombobox" onchange={paymentMethodChanged}>
+				</lightning-combobox>
+
+				<lightning-combobox options={subscriptionMonthsOptions} label={label.Subscription_Duration_Months}
+					placeholder={label.selectAnOption}
+					style="display:none;width: 90%;margin-left: 5%;padding: 6px;font-size: 16px;"
+					class="subscriptionMonths">
+				</lightning-combobox>
+
+				<lightning-input label={label.Number_of_Cars} class="noOfCarsInput" type="number"
+					placeholder="3 , 4 , etc..." minlength="1" maxlength="3" value=""
+					style="display:none;width: 90%;margin-left: 5%;padding: 6px;font-size: 16px;">
+				</lightning-input>
+
+				<!-- <lightning-input label={label.Phone} class="mobileInput" type="text" placeholder={label.Phone}
+                required="true" maxlength="13" minlength="8" value=""
+                style="display:none;width: 90%;margin-left: 5%;padding: 6px;font-size: 16px;">
+            </lightning-input>
+
+            
+
+            <lightning-input label={label.Car_brand_model} class="carBrandModel" type="text"
+                placeholder={label.Car_brand_model} required="true"
+                style="display:none;width: 90%;margin-left: 5%;padding: 6px;font-size: 16px;">
+            </lightning-input>
+
+            <lightning-input label={label.Color_Plate_number} class="colorPlateNumber" type="text"
+                placeholder="White, VD 123456" required="true"
+                style="display:none;width: 90%;margin-left: 5%;padding: 6px;font-size: 16px;">
+            </lightning-input>
+
+            <lightning-input label={label.Car_year} class="carYear" type="text" placeholder="2019" maxlength="4"
+                value="" required="true" minlength="4"
+                style="display:none;width: 90%;margin-left: 5%;padding: 6px;font-size: 16px;">
+            </lightning-input> -->
+
+				<div class="error"
+					style="display:none;width: 90%;background-color: #ffffff;padding: 12px 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;margin: 10px auto;font-family: 'Open Sans', sans-serif;font-size: 16px;border-left-color: #d9534f;background-color: rgba(217, 83, 79, 0.1);">
+					<strong style="color:#d9534f;">{label.Error} !</strong> -
+					<span class="errorMsg"> {label.please_enter_a_valid_address}</span>
+				</div>
+				<input class="save" type="button"
+                style="border: none;background: green;color: white;padding: 10px 30px;margin: 10px 20px;border-radius: 5px;font-size: 16px;"
+                onclick={saveCustomerEmail} value={label.Save} />
+				<div class="loader" style="display: none;">
+					<div class="demo-only demo-only_viewport" style="height:6rem;position:relative">
+						<div role="status" class="slds-spinner slds-spinner_medium">
+							<span class="slds-assistive-text">{label.loading}</span>
+							<div class="slds-spinner__dot-a"></div>
+							<div class="slds-spinner__dot-b"></div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+
+
+		<div class="buttons">
+			<!-- <template if:false={loggedIn}> -->
+			<template if:false={loginUser}>
+				<button onclick={navigateToWebPage}
+        style="border: none; color: #187C29; font-size: 15px; font-weight: 700; padding: 10px 20px 5px 20px;background: white;">{label.logInButton}</button>
+			</template>
+			<template if:true={loginUser}>
+					<button onclick={backtoPortal}
+        style="border: none; color: #187C29; font-size: 15px; font-weight: 700; padding: 10px 20px 5px 20px;background: white;">Dashboard</button>
+				<button onclick={handleLogOut}
+        style="border: none; color: #187C29; font-size: 15px; font-weight: 700; padding: 10px 20px 5px 20px;background: white;">{label.logOutButton}</button>
+			</template>
+			<!-- </template> -->
+			<!-- <template if:true={loggedIn}>
+        <button onclick={redirectToDashboard}
+        style="border: none; color: #187C29; font-size: 15px; font-weight: 700; padding: 10px 20px 5px 20px;background: white;">{label.Dashboard}</button>
+        <button onclick={handleLogOut}
+        style="border: none; color: #187C29; font-size: 15px; font-weight: 700; padding: 10px 20px 5px 20px;background: white;">{label.logOutButton}</button>
+    </template> -->
+
+
+
+			<!-- <button onclick={handleShowCase}
+            style="border: none; color: #187C29; font-size: 15px; font-weight: 700; padding: 10px 20px 5px 20px;background: white;">{label.Contact_Us}</button> -->
+			<div class="languageConverter">
+				<select name="languages" id="languages" class="languages"
+                style="cursor: pointer;width:150px;border:1px solid #187C29;color:#187C29;font-weight:600;padding:8px 20px;border-radius: 5px;margin-right:1rem"
+                onchange={languageChanged}>
+                <option value="en_US,CHF">English (CHF)</option>
+                <option value="fr_CH,CHF">French (CHF)</option>
+                <option value="de_CH,CHF">German (CHF)</option>
+                <option value="fr_CH,EUR">French (EUR)</option>
+                <!-- <option value="en_US,GHS">English (GHS)</option> -->
+
+            </select>
+			</div>
+		</div>
+		<template if:true={zaWashFrontUiVisibility}>
+			<c-zawash-front-ui body-text={bodyText} enter-your-street={EnterYourStreet}
+				onsendtoastevent={sendToastevent} our-partner-car-parks={ourPartnerCarParks}
+				onsetmapmarker={setMapMarker} onresetmarker={resetMarker} onhidezelectzawash={hideSelectZawash}
+				onhideeverything={hideEveryThing} ongetcurrentlocation={getCurrentLocation}></c-zawash-front-ui>
+		</template>
+
+		<template if:true={serviceVisible}>
+			<c-choose-your-service onselectextraservices={showServiceCart} onhideservicechoose={hideServiceChoose}>
+			</c-choose-your-service>
+		</template>
+		<!-- <template if:true={selectZawash}>
+        <c-select-your-zawash style="transition: all 1s ease;" onshowchooseservice={makeServiceVisible}
+            onhidezawash={hideZawash}>
+        </c-select-your-zawash>
+    </template> -->
+
+
+		<template if:true={serviceCart}>
+			<c-service-cart text-language={textLanguage} onhideservicecart={serviceCartControll}
+				onhidecartandshowsubtotalcomponent={hideCartAndShowSubtotalComponent}></c-service-cart>
+		</template>
+
+		<template if:true={appointmentBookingVisibility}>
+			<c-appointment-booking months={months} text-language={textLanguage} onupdateleadid={updateLeadId}
+				onhideappointmentbooking={hideAppointmentBooking} onhideservicecomponent={hideServiceComponent}
+				ongotopayment={showPaymentSection}>
+			</c-appointment-booking>
+		</template>
+		<template if:true={serviceSpotVisibility}>
+			<c-service-spot text-language={textLanguage} onhideservicespot={hideServiceSpot}
+				onproceedtoappointmentbooking={proceedToAppointmentBooking} onsetroute={setRoute}
+				onrestoreservicecomponent={restoreServiceComponent} onresetmarker={initializeMarker}>
+			</c-service-spot>
+		</template>
+		<!-- <template if:true={subscriptionCardVisibility}>
+        <c-subscription-card onhidepayment={hideSubscriptionCard} onshowpaymentoptions={showPaymentOptions}>
+        </c-subscription-card>
+    </template> -->
+		<!-- <template if:true={paymentSectionVisibility}>
+        <c-select-payment-method onhidepayment={hidePayment} onshowbankpayment={showBankPayment}
+            onshowcardpayment={showCardPayment}></c-select-payment-method>
+    </template> -->
+		<template if:true={cardPaymentVisibility}>
+			<div class="cardPaymentss">
+				<c-card-payment text-language={textLanguage} onhidecardpayment={hideCardPayment}
+					service-appointment-id={serviceAppointmentId} onpaymentsuccessfull={paymentSuccessfull}>
+				</c-card-payment>
+			</div>
+		</template>
+		<!-- <template if:true={bankPaymentVisibility}>
+        <div class="cardPaymentss">
+            <c-bank-payment onhidebankpayment={hideBankPayment}></c-bank-payment>
+        </div>
+    </template> -->
+		<template if:true={paymentSuccessfullPageVisibility}>
+			<c-payment-successful-page text-language={textLanguage}></c-payment-successful-page>
+		</template>
+
+		<!-- custom toast event  -->
+		<template if:true={notAvailable}>
+			<template if:true={showToastBar}>
+				<div class="slds-notify_container">
+					<div class={outerClass} role="status">
+						<span class="slds-assistive-text">{type}</span>
+						<span class={innerClass} title={message}>
+                        <lightning-icon icon-name={getIconName} alternative-text="icon" styleclass="slds-icon slds-icon_small" variant="inverse" size="small"></lightning-icon>
+                    </span>
+						<div class="slds-notify__content">
+							<h2 class="slds-text-heading_small">
+								<lightning-formatted-rich-text value={message}>
+								</lightning-formatted-rich-text>
+							</h2>
+						</div>
+
+						<div class="slds-notify__close">
+							<lightning-button-icon icon-name="utility:close" size="small" variant="border-filled"
+								class="slds-button slds-button_icon slds-button_icon-inverse" alternative-text="next"
+								onclick={closeModel}></lightning-button-icon>
+						</div>
+					</div>
+				</div>
+			</template>
+		</template>
+
+</template>

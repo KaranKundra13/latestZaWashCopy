@@ -1,0 +1,196 @@
+<template>
+
+    <div class="calender">
+        <div class="hideAppointmentBookingPartBtn" onclick={hideAppointmentBooking}>
+            <svg class="hideAppointmentBookingPartBtnIcon" width="12" height="20" xmlns="http://www.w3.org/2000/svg"
+                style="cursor: pointer;">
+                <path fill="#187C29"
+                    d="M.222 9.232 9.462.215a.774.774 0 0 1 1.07 0l1.246 1.206a.715.715 0 0 1 0 1.036L4.32 9.75l7.46 7.293a.715.715 0 0 1 0 1.036l-1.247 1.206a.774.774 0 0 1-1.07 0l-9.24-9.017a.715.715 0 0 1 0-1.036Z"
+                    class="fa-primary"></path>
+            </svg>
+        </div>
+        <div class="progressBar">
+            <div class="progress"></div>
+        </div>
+
+        <lightning-combobox name="Existing Quotes:" label="Existing Quotes:" value={value} placeholder="Select quote"
+            options={existingQuoteOptions} onchange={getSelectedQuoteData} style="margin: 1rem 9rem 1rem 2rem;"></lightning-combobox>
+
+
+        <div class="calenderContent" style="height: 90vh;overflow-y: auto;">
+            <div class="monthControll" style="display: flex;justify-content: space-around;">
+                <div class="leftShift" onclick={reduceMonth}><img src={leftAngle} alt=""></div>
+                <div class="calenderMonth"><span class="month">February</span><span style="margin-left:10px;"
+                        class="year">2022</span></div>
+                <div class="rightShift" onclick={addMonth}><img src={rightAngle} alt=""></div>
+            </div>
+            <div class="calender-content">
+                <span><b>M</b></span>
+                <span><b>T</b></span>
+                <span><b>W</b></span>
+                <span><b>Th</b></span>
+                <span><b>F</b></span>
+                <span><b>S</b></span>
+                <span><b>S</b></span>
+
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+                <div class="calender-day extras" onclick={selectDate}></div>
+            </div>
+            <div class="loader"
+                style="display:none;position: absolute; top: 65px; background: white; opacity: 0.5; width: 100%; height: 100vh; padding-top: 250px;">
+                <div class="demo-only demo-only_viewport" style="height:6rem;position:relative">
+                    <div role="status" class="slds-spinner slds-spinner_medium">
+                        <span class="slds-assistive-text">{label.loading}</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="noTimeSlots" style="display:none;padding: 20px 65px;">
+                <p>{label.slotErrorsinfo} : </p>
+                <ul style="padding: 10px 0px 10px 10px;">
+                    <li>1] {label.slotFirstError}</li>
+                    <li style="padding:5px 0px">2] {label.slotSecondError}</li>
+                    <li>3] {label.slotThirdError}</li>
+                </ul>
+            </div>
+            <div class="timeSlots" style="padding:20px;text-align: center;">
+                <template for:each={timeSlots} for:item="timeSlot">
+                    <div class="slot" key={Id} onclick={btnClicked}>{timeSlot}</div>
+                </template>
+            </div>
+
+            <template if:true={carDetailsVisibility}>
+                <div class="carDetails">
+                    <h1 style="width:85%;margin: auto;padding:20px 0px;font-family: Roboto, sans-serif;">
+                        {label.Please_fill_the_following_details} :
+                    </h1>
+                    <lightning-input style="margin-left: 2.5rem;" type="checkbox" label={label.useAccountEmail}
+                        checked="true" onchange={showEmailField}></lightning-input>
+                    <template if:true={showEmailInputField}>
+                        <lightning-input style="margin:0rem 3rem 0rem 2.5rem;" class="newEmail" type="text"
+                            variant="standard" name={label.email} label={label.email}></lightning-input>
+                    </template>
+                    <div style="display: flex;width: 82%;margin:auto;">
+                        <lightning-combobox label="Country Code" value={selectedCountryCode}
+                            options={countryCodeOptions} onchange={handleCountryCodeChange}
+                            style="font-family: Roboto, sans-serif;margin-top: 6px;width: 130px;"></lightning-combobox>
+                        <lightning-input label={label.mobileNo} class="mobileNo carDetailsInput" type="text"
+                            onkeydown={appendMobileNo} placeholder='1234567890'
+                            style="font-family: Roboto, sans-serif;width: 105%;margin:auto;padding: 6px;font-size: 16px;"
+                            maxlength="10">
+                        </lightning-input>
+                    </div>
+
+                    <lightning-input label={label.Car_brand_model} class="carBrandModel carDetailsInput" type="text"
+                        placeholder='Audi, Q3'
+                        style="font-family: Roboto, sans-serif;width: 85%;margin:auto;padding: 6px;font-size: 16px;">
+                    </lightning-input>
+
+                    <lightning-input label={label.Color_Plate_number} class="colorPlateNumber carDetailsInput"
+                        type="text" placeholder="White, VD 123456"
+                        style="font-family: Roboto, sans-serif;width: 85%;margin:auto;padding: 6px;font-size: 16px;">
+                    </lightning-input>
+
+                    <lightning-input label={label.Car_year} class="carYear" type="number" placeholder="2019"
+                        maxlength="4" value="" minlength="4"
+                        style="font-family: Roboto, sans-serif;width: 85%;margin:auto;padding: 6px;font-size: 16px;">
+                    </lightning-input>
+                </div>
+            </template>
+
+            <div class="Error"
+                style="display:none;width: 85%;background-color: #ffffff;padding: 12px 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;margin: 10px auto;font-family: 'Open Sans', sans-serif;font-size: 16px;border-left-color: #d9534f;background-color: rgba(217, 83, 79, 0.1);">
+                <strong style="color:#d9534f;">{label.Error}</strong> - <span class="errorMsg"></span>
+            </div>
+
+            <div class="goToPayment" onclick={goToPayment} style="display: none;font-family: Roboto, sans-serif;">
+                {label.appointmentBookingProceed}
+            </div>
+        </div>
+        <h1 class="thankyouText" style="display: none;padding: 40px; font-size: 18px;font-family: Roboto, sans-serif;">
+            {label.addBooking_YourAppointmentHas}..!
+        </h1>
+    </div>
+
+
+    <!-- <template if:true={thankyouPageVisibility}>
+
+        
+        <div class="thankyouPage" onclick={hideError}>
+            <div class="hideAppointmentBookingPartBtn" onclick={hideAppointmentBooking}>
+                <svg class="hideAppointmentBookingPartBtnIcon" width="12" height="20" xmlns="http://www.w3.org/2000/svg"
+                    style="cursor: pointer;">
+                    <path fill="#187C29"
+                        d="M.222 9.232 9.462.215a.774.774 0 0 1 1.07 0l1.246 1.206a.715.715 0 0 1 0 1.036L4.32 9.75l7.46 7.293a.715.715 0 0 1 0 1.036l-1.247 1.206a.774.774 0 0 1-1.07 0l-9.24-9.017a.715.715 0 0 1 0-1.036Z"
+                        class="fa-primary"></path>
+                </svg>
+            </div>
+            <div class="progressBar">
+                <div class="progress"></div>
+            </div>
+            >>>>>>>>>>>>>>>>>>>>>>
+            <div class="detailForm" style="padding:10px 40px;overflow-y: auto;height: 90vh;">
+                <p style="font-size: 18px;padding:10px 0px;">{label.pleaseFillTheFollowingDetails} : </p>
+                <template for:each={carsarray} for:item="car">
+                    <div key={car.key} class="card" style="border-radius: 10px; border: 1px solid rgb(205,205,205); padding: 0px 20px 20px 20px; margin: 30px 0px;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                        <div style="text-align: center; font-weight: bold; padding-top: 10px; font-size: 15px;">{label.Car} {car} {label.Details}</div>
+                        <div class="cardHeader" style="display: flex;justify-content: space-between;">
+                            <img src="https://zawash--sandbox.sandbox.preview.salesforce-experience.com/sfsites/c/resource/1663579987000/Zawash/ZawashIcons/adomicile.png" alt="" style="width:100px;margin-bottom: 15px;">
+                            <lightning-input class="carDetailInput" type="text" label={label.Car_brand_model} placeholder={label.Car_brand_model} style="width:clac(100% - 100px);margin-top: 15px;">
+                            </lightning-input>
+                        </div>
+                        <lightning-input class="carDetailInput" type="text" label={label.Color_Plate_number} placeholder="White, VD 123456">
+                        </lightning-input>
+                        <lightning-input class="carDetailInput" type="number" label={label.Car_year} placeholder="2019"></lightning-input>
+                    </div>
+                </template>
+                <div class="Error"
+                            style="display:none;width: 95%;background-color: #ffffff;padding: 12px 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;margin: 10px auto;font-family: 'Open Sans', sans-serif;font-size: 16px;border-left-color: #d9534f;background-color: rgba(217, 83, 79, 0.1);">
+                            <strong style="color:#d9534f;">All Fields are required !</strong> - <span class="errorMsg">  Please fill all the details for each car.</span>
+                        </div>
+                <div class="detailSubmitBtn" onclick={StoreDetailsAndShowThankyouText}>{label.Submit}</div>
+            </div>
+        </div>
+    </template> -->
+</template>

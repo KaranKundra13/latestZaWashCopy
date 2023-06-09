@@ -1,0 +1,46 @@
+<template>
+
+  <div class="success-page">
+
+    <div
+      style="width: fit-content; font-size: 60px; border: 5px solid green; border-radius: 100%; margin: auto; margin-top: 25px; padding: 5px 30px; color: green; ">
+      &check;</div>
+    <h2 style="font-weight: 900; font-size: larger; text-align: center;color: #187C29;padding: 15px;font-size: 20px;">
+      {label.paymentSuccessful}</h2>
+
+    <p style="font-size: 17px; width: 90%; margin: auto; padding: 10px; font-weight: 500;    color: black;">{label.thankyouText} <br>
+      {label.YourOrderNumberis} : {orderNumber}</p>
+    <template if:false={isSpinner}>
+      <template if:true={assigned}>
+        <div class="washerdetails"
+        style="width: 90%; margin: auto; border: 1px solid rgb(200,200,200); padding: 20px 20px; border-radius: 5px; text-align: center;margin-top:50px;color:black;">
+        <h1 style="font-size: 16px;">{label.carWashAgentDetails}</h1>
+        <div class="image">
+          <img src={washerIcon} alt="" style="width:200px">
+        </div>
+        <div class="details">
+          <h1 style="font-size: 20px;">
+            {assignedResource}
+          </h1>
+          <img src={rating} alt="" style="padding-top: 10px;">
+        </div>
+      </div>
+      </template>
+      <template if:false={assigned}>
+        <h1> zaWasher will be assigned shortly...</h1>
+      </template>
+    </template>
+    <template if:true={isSpinner}>
+      <div class="demo-only demo-only_viewport" style="height:6rem;position:relative">
+        <div role="status" class="slds-spinner slds-spinner_medium">
+            <span class="slds-assistive-text">{label.loading}</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+    </template>
+  </div>
+
+
+
+</template>

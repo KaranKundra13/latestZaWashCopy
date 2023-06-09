@@ -1,0 +1,92 @@
+<template>
+    <div class="serviceSpot">
+        <div class="hideServiceSpotBtn" onclick={hideServiceSpot}>
+            <svg class="serviceSpotHeaderBtnIcon" width="12" height="20" xmlns="http://www.w3.org/2000/svg"
+                style="cursor: pointer;">
+                <path fill="#187C29"
+                    d="M.222 9.232 9.462.215a.774.774 0 0 1 1.07 0l1.246 1.206a.715.715 0 0 1 0 1.036L4.32 9.75l7.46 7.293a.715.715 0 0 1 0 1.036l-1.247 1.206a.774.774 0 0 1-1.07 0l-9.24-9.017a.715.715 0 0 1 0-1.036Z"
+                    class="fa-primary"></path>
+            </svg>
+        </div>
+        <div class="progressBar">
+            <div class="progress"></div>
+        </div>
+
+
+        <div class="serviceSpotContent">
+            <h1 style="color: black;" >{label.serviceSpotChoosing}</h1>
+            <div class="servicesComponent">
+                <div class="serviceSpotList flex">
+                    <div data-name="AtHome" class="serviceSpotCard" onclick={proceedToAppointmentBooking}>
+                        <img data-name="AtHome" src={AtHomeIcon} alt="">
+                        <h2 style="color: black;" data-name="AtHome">{label.spotServiceHome}</h2>
+                        <h3 style="color: black;" data-name="AtHome">({currency} {travelCost})</h3>
+                    </div>
+                    <div data-name="partnerCarPark" class="serviceSpotCard" onclick={proceedToAppointmentBooking}>
+                        <img data-name="partnerCarPark" src={partnerCarParkIcon} alt="">
+                        <h2 style="color: black;" data-name="partnerCarPark">{label.serviceSpotParking}</h2>
+                        <h3 style="color: black;" data-name="partnerCarPark">({label.Free_Transport})</h3>
+                    </div>
+                </div>
+
+                <div class="subTotalMiniComponent" style="display:none">
+                    <div class="subTotalDetails" style="color: white;
+                    background: #187C29;">
+                        <p class="subTotalProductCounter" style="color:black;">1</p>
+                        <h4 class="subTotalCostCounter">{currency} <span class="subTotalCost" style="padding-left:4px;" >{subTotalCost}</span></h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loader"
+                style="display:none;position: absolute; top: 65px; background: white; opacity: 0.5; width: 100%; height: 100vh; padding-top: 250px;">
+                <div class="demo-only demo-only_viewport" style="height:6rem;position:relative">
+                    <div role="status" class="slds-spinner slds-spinner_medium">
+                        <span class="slds-assistive-text">{label.loading}</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="closestServiceTerritory" style="display: none">
+                <h2 style="padding : 20px 0px 20px 25px; color:black">{label.Please_Select_a_Partner_Car_Parks} : </h2>
+                <template if:false={thereareTerritories}>
+                   <h2 style="padding : 20px 0px 20px 25px; color:black"> {label.No_Partner_Parking_Is_Available}</h2>
+                </template>
+                <template if:true={thereareTerritories}>
+                <template for:each={closestServiceTerritory} for:item="serviceTerritory">
+                    <div class="serviceTeritory" data-id={serviceTerritory.Id} data-name={serviceTerritory.Name}
+                        data-lat={serviceTerritory.Latitude__c} data-lng={serviceTerritory.Longitude__c}
+                        key={serviceTerritory.Id} data-add={serviceTerritory.Address} onclick={serviceTeritoryChoosed}>
+                        <lightning-icon icon-name="utility:checkin" data-id={serviceTerritory.Id}
+                            data-name={serviceTerritory.Name} data-lat={serviceTerritory.Latitude__c}
+                            data-lng={serviceTerritory.Longitude__c} data-add={serviceTerritory.Address} style="width:40px;height:40px;padding:5px;">
+                        </lightning-icon>
+                        <span data-id={serviceTerritory.Id} data-name={serviceTerritory.Name}
+                            data-lat={serviceTerritory.Latitude__c} data-lng={serviceTerritory.Longitude__c}
+                            data-add={serviceTerritory.Address} style="margin: 0; padding: 0; font-weight: 100; font-size: 18px;">
+                            <p data-id={serviceTerritory.Id} data-name={serviceTerritory.Name}
+                                data-lat={serviceTerritory.Latitude__c} data-lng={serviceTerritory.Longitude__c}
+                                data-add={serviceTerritory.Address} style="font-size: 15px;font-weight:400; color:black">{serviceTerritory.Name}</p>
+                            <p data-id={serviceTerritory.Id} data-name={serviceTerritory.Name}
+                                data-lat={serviceTerritory.Latitude__c} data-lng={serviceTerritory.Longitude__c}
+                                data-add={serviceTerritory.Address} style="font-size: 13px;font-weight:bold; color:grey">{serviceTerritory.Address}</p>
+                        </span>
+                    </div>
+                </template> 
+                </template>
+
+                <div class="serviceTritoryBottom">
+                    <div class="teritoryChoosen"
+                        style="width: 70%;background: #f9fafe;border-radius: 10px;padding: 15px 20px;font-size: 16px;font-weight: 600;color:black;">
+                        {serviceTeritorySelectedName}</div>
+                    <div class="teritorySubmit"
+                        style="text-align: center; text-decoration: none; font-size: 15px; font-weight: bold;color: white; background: #187C29; padding: 15px 20px; border-radius: 10px; cursor: pointer;height: fit-content;"
+                        onclick={submitTeritory}>{label.Next}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</template>

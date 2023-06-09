@@ -1,0 +1,25 @@
+.success-page {
+  width: 100%;
+  max-width: 470px;
+  float: right;
+  background: white;
+  height: 100vh;
+  overflow-y: auto;
+  animation: rightIn 0.8s;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 9;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: all 0.8s;
+  font-family: 'Roboto', sans-serif;
+  padding:0 20px 20px;
+}
+@keyframes rightIn {
+  0%{
+      right:-470px;
+  }
+  100%{
+      right:0;
+  }
+}

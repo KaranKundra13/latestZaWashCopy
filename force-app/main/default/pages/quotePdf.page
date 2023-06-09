@@ -1,0 +1,165 @@
+<apex:page Controller="CreatePDFController" action="{!CreatePDFController}" renderAs="pdf" contentType="application/pdf#MyPDF.pdf"
+    applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" showHeader="false" sidebar="false">
+    <!-- <img  src="{!$Resource.zaWashlogo}" height="40px" />
+    <apex:outputText value="{!htmlString}" escape="false"/>
+    <apex:outputText value="{!htmlString1}" escape="false"/> -->
+<html>
+    <head>
+        <style>
+            .zaWashAddressArea{line-height: 30px;margin-left:20px;}
+            .zaWashAddressArea p{margin: 0;padding: 0}
+            .customerDetails p{margin: 0;padding: 0}
+        </style>
+    </head>
+    <body>
+
+    
+        <div style="font-family: sans-serif;">
+            <table>
+                <tr>
+                    <td>
+                        <img src="{!$Resource.zaWashlogo}" height="40px" />
+                        <br></br>
+                        <br></br>
+                    </td>
+                    <td>
+                        <div class="zaWashAddressArea">
+                            <apex:outputText value="{!zaWashAddress}" escape="false" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <hr></hr>
+            <table style="width:100%">
+                <tr>
+                    <td style="width:33%"></td>
+                    <td style="width:33%"></td>
+                    <td style="width:34%">
+                        <div class="customerDetails" style="line-height: 30px;margin-top:10px">
+                            <apex:outputText value="{!customer}" escape="false" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br></br>
+            <h1 style="color:green;margin:0;padding: 0;font-size: 15px">
+                <apex:outputText value="{!QuoteName}" escape="false" />
+            </h1>
+            <p style="margin:0;padding: 10px 0px;line-height: 30px;font-weight: 500;">{!dateOf} <apex:outputText value="{!term}" escape="false" />  
+                <apex:outputText value="{!QuoteDate}" escape="false" />
+            </p>
+            <hr></hr>
+            <table style="width:100%">
+                <tr>
+                    <th style="text-align: left;padding: 10px 5px;">{!description}</th>
+                    <th style="text-align: center;padding: 10px 5px;">{!quantity}</th>
+                    <th style="text-align: center;padding: 10px 5px;">{!unitPrice}</th>
+                    <th style="text-align: center;padding: 10px 5px;">{!taxes}</th>
+                    <th style="text-align: right;padding: 10px 5px;">{!totalPrice}</th>
+                </tr>
+                <apex:outputText value="{!htmlString}" escape="false" />
+            </table>
+            <table style="width:100%">
+                <tr>
+                    <td style="width:50%"></td>
+                    <td style="width:50%">
+                        <hr></hr>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:50%"></td>
+                    <td style="width:50%;">
+                        <div style="width:calc(100% - 20px);display: flex;justify-content: space-between;margin:0;padding:0px 10px;">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <p style="margin:0;padding:0;">{!amountExcludingTax}</p>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <p style="margin:0;padding:0;">
+                                            <span style="margin-right: 4px"><apex:outputText value="{!currentCurrency}" escape="false" /></span>
+                                            <apex:outputText value="{!AET}" escape="false" />
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:50%"></td>
+                    <td style="width:50%;">
+                        <div style="width:calc(100% - 20px);display: flex;justify-content: space-between;margin:0;padding:15px 10px 0px;">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <p style="margin:0;padding:0;">
+                                            <span style="margin-right:5px">VAT</span>
+                                            <apex:outputText value="{!tax}" escape="false" />
+                                        </p>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <p style="margin:0;padding:0;">
+                                            <span style="margin-right: 4px"><apex:outputText value="{!currentCurrency}" escape="false" /></span>
+                                            <apex:outputText value="{!vat}" escape="false" />
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <td style="width:50%"></td>
+                    <td style="width:50%;">
+                        <div style="width:calc(100% - 20px);display: flex;justify-content: space-between;margin:0;padding:0px 10px;">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <p style="margin:0;padding:0;">{!discount}</p>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <p style="margin:0;padding:0;">
+                                            <span style="margin-right: 4px"><apex:outputText value="{!currentCurrency}" escape="false" /></span>
+                                            <apex:outputText value="{!totalDiscount}" escape="false" />
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                <tr>
+                    <td style="width:50%"></td>
+                    <td style="width:50%">
+                        <hr></hr>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:50%"></td>
+                    <td style="width:50%;">
+                        <div style="width:calc(100% - 20px);display: flex;justify-content: space-between;margin:0;padding:0px 10px 0px;">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <p style="margin:0;padding:0;">{!totalPrice}</p>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <p style="margin:0;padding:0;">
+                                            <span style="margin-right: 4px"><apex:outputText value="{!currentCurrency}" escape="false" /></span>
+                                            <apex:outputText value="{!totalQuoteAmount}" escape="false" />
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="position: fixed; bottom: 0; height: 100%; width: 100%;text-align: center">
+                <hr></hr>
+                <apex:outputText value="{!footer}" escape="false" />
+            </div>
+        </div>
+    </body>
+</html>
+</apex:page>

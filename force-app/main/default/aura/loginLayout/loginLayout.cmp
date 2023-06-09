@@ -1,0 +1,12 @@
+<aura:component implements="forceCommunity:themeLayout">
+    <aura:attribute name="search" type="Aura.Component[]"/>
+    <aura:attribute name="sidebarFooter" type="Aura.Component[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="body">
+        <div class="slds-grid slds-grid--align-center test">
+            <div class="slds-col content" style="width:100%;" >
+                {!v.body}
+            </div>
+        </div>
+    </div>
+</aura:component>

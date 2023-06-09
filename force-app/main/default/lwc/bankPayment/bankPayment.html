@@ -1,0 +1,77 @@
+<template>
+   <div class="bankPayment">
+      <div class="hideBtn" onclick={hideBankPayment}>
+         <svg class="BankPaymentHeaderBtnIcon" width="12" height="20" xmlns="http://www.w3.org/2000/svg"
+            style="cursor: pointer;">
+            <path fill="#187C29"
+               d="M.222 9.232 9.462.215a.774.774 0 0 1 1.07 0l1.246 1.206a.715.715 0 0 1 0 1.036L4.32 9.75l7.46 7.293a.715.715 0 0 1 0 1.036l-1.247 1.206a.774.774 0 0 1-1.07 0l-9.24-9.017a.715.715 0 0 1 0-1.036Z"
+               class="fa-primary"></path>
+         </svg>
+      </div>
+      <div class="progressBar">
+         <div class="progress"></div>
+      </div>
+
+      <div class="slds-m-top_medium">
+
+         <div class="img" style="width:200px;margin:20px auto">
+            <img src={bankImg} alt="" style="width:100%">
+         </div>
+
+         <!-- <!Default/basic -->
+         <div class="slds-p-around_medium lgc-bg">
+            <legend class="slds-form-element__legend slds-form-element__label">{label.AccountHolderName}</legend>
+
+            <lightning-input type="text" data-id="accountholder-name" label=" " placeholder={label.FullName}>
+            </lightning-input>
+         </div>
+      </div>
+
+      <div class="slds-m-top_medium ">
+
+
+         <!-- <!Default/basic -->
+         <div class="slds-p-around_medium lgc-bg">
+
+
+            <legend class="slds-form-element__legend slds-form-element__label">{label.AccountNumber}</legend>
+            <lightning-input type="text" label=" " data-id="account-number" placeholder="1111 2222 3333 4444"
+               maxlength="19" onchange={onlynumbers} onkeypress={space}></lightning-input>
+         </div>
+
+
+      </div>
+
+
+
+      <div class="slds-grid slds-gutters">
+         <div class="slds-col slds-size_1-of-2">
+            <div class="slds-m-top_medium ">
+
+
+
+               <div class="slds-p-around_medium lgc-bg">
+
+                  <lightning-combobox data-id="account-type" name="progress" label={label.AccountType} value={value}
+                     placeholder="individual" options={options} onchange={handleChange}></lightning-combobox>
+               </div>
+            </div>
+         </div>
+         <div class="slds-col slds-size_1-of-2">
+            <div class="slds-m-top_medium ">
+
+
+               <!-- Default/basic -->
+               <div class="slds-p-around_medium lgc-bg">
+                  <legend class="slds-form-element__legend slds-form-element__label">{label.RoutingNumber}</legend>
+
+                  <lightning-input type="text" label=" " data-id="routing-number" onchange={onlynumbers}>
+                  </lightning-input>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <input type="button" class="button" value={label.PayNow} onclick={doPayment}>
+   </div>
+</template>

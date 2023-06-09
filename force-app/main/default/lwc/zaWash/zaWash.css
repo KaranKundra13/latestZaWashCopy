@@ -1,0 +1,148 @@
+.bars {
+    width: 50px;
+    padding-top: 16px;
+    padding-left: 20px;
+}
+
+.flex {
+    display: flex;
+}
+
+.logo {
+    width: 250px;
+    padding: 10px;
+}
+
+.content {
+    text-align: center;
+    margin: auto;
+    background: transparent;
+    background: linear-gradient(180deg, white 60px, transparent 90%);
+}
+
+.contentInfo {
+    color: #187C29;
+    font-weight: bold;
+    font-size: 26px;
+    padding: 20px;
+}
+
+.searchBarIcon1 img,
+.searchBarIcon2 img {
+
+    height: auto;
+    vertical-align: text-bottom;
+    cursor: pointer;
+}
+
+.searchBarIcon1 img {
+    width: 18px;
+}
+
+.searchBarIcon2 img {
+    width: 16px;
+    transform: rotate(45deg);
+}
+
+.locationInput input {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 10px;
+    font-size: 19px;
+    width: calc(100% - 40px);
+}
+
+.locationInput input:active {
+    border: none;
+    outline: none;
+}
+
+.locationInput {
+    width: 90%;
+    max-width: 480px;
+    margin: auto;
+    box-shadow: 0 6px 24px 0 rgb(0 0 0 / 10%);
+    border-radius: 10px;
+    background: white;
+    padding: 0px 10px;
+}
+
+.searchSuggestion {
+    width: 90%;
+    max-width: 480px;
+    margin: auto;
+    box-shadow: 0 6px 24px 0 rgb(0 0 0 / 10%);
+    border-radius: 10px;
+    background: white;
+    margin-top: 10px;
+    padding: 10px;
+    text-align: left;
+}
+
+.searchSuggestion p {
+    padding: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.searchSuggestion p:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+
+.buttons {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    z-index: 3;
+    display: flex;
+}
+
+@media screen and (max-width: 715px) {
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        top: 0px;
+        box-shadow: 0px 13px 0px white;
+        z-index: 3;
+        margin: auto;
+        padding: 20px 15px 0px 5px;
+        width: 100%;
+        right: 0px;
+        background: white;
+    }
+
+    .getEmail {
+        margin-top: calc(50vh - 426px);
+    }
+}
+
+.getEmail {
+    margin-top: calc(50vh - 226px);
+}
+
+.shadowOverlay {
+    width: calc(100% - 470px);
+    height: 110vh;
+    position: absolute;
+    left: 0;
+    top: -45px;
+    z-index: 3;
+    opacity: 0.3;
+    background: black;
+    animation: opacity 0.8s;display: none;
+}
+
+@keyframes opacity {
+    0% {
+        opacity: 0;
+        width: 100%;
+    }
+
+    100% {
+        opacity: 0.3;
+        width: calc(100% - 470px);
+    }
+}

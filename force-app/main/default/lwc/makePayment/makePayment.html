@@ -1,0 +1,60 @@
+<template>
+    <template if:true={paymentSuccessful}>
+        <div class="complition">
+            <div class="msgHead">
+               <h1>{label.thank_you}</h1>
+            </div>
+            <div class="msgContent">
+               {label.you_have_already_made_the_payment}
+            </div>
+            
+        </div>
+    </template>
+    <template if:false={paymentSuccessful}>
+        <template if:true={doblur}>
+            <div class="overlay"></div>
+        </template>
+        <div class="master slds-card">
+            <div class="zaWashLogo">
+                <img src={logo} alt="">
+                <div class="langSelector">
+                    <select name="languages" id="languages"
+                            style="background-color: white;cursor: pointer;width:150px;border:1px solid #187C29;color:#187C29;font-weight:bold;padding:8px 20px;border-radius: 5px;margin-right: 1rem;position:absolute;right:1rem"
+                            onchange={languageChanged}>
+                            <template for:each={options} for:item="opt" for:index="index">
+                               <option key={opt} value={opt.value}>{opt.label}</option>
+                            </template>
+                        </select>
+                </div>
+            </div>
+            <div class="card">
+    
+                <div class="icon">
+                    <img src={iconlink} alt="">
+                </div>
+                <div class="infoWrap">
+                    <div class="details">
+                        <table>
+                            <tbody>
+                                <template for:each={finaldata} for:item="data">
+                                    <tr key={data.key} class="table">
+                                        <td class="keys">{data.key}</td>
+                                        <td>{data.value}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="paymentbtn">
+                    <button type="button" title="Successful action" onclick={doPayment}
+                        class="slds-m-left_x-small paybtn ">{label.PayNow}</button>
+                </div>
+            </div>
+    
+        </div>
+        <template if:true={showPaymentComponent}>
+            <c-payment-component onhidepayment={hidePaymentComp} text-language={sendLang} currentcurrency={currentcurrency}></c-payment-component>
+        </template>
+    </template>
+</template>

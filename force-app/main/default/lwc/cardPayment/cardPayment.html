@@ -1,0 +1,296 @@
+<template>
+	<div class="cardPayment">
+		<div class="hideBtn" onclick={hideCardPayment}>
+			<svg class="CardPaymentHeaderBtnIcon" width="12" height="20" xmlns="http://www.w3.org/2000/svg"
+				style="cursor: pointer;">
+				<path fill="#187C29"
+					d="M.222 9.232 9.462.215a.774.774 0 0 1 1.07 0l1.246 1.206a.715.715 0 0 1 0 1.036L4.32 9.75l7.46 7.293a.715.715 0 0 1 0 1.036l-1.247 1.206a.774.774 0 0 1-1.07 0l-9.24-9.017a.715.715 0 0 1 0-1.036Z"
+					class="fa-primary"></path>
+			</svg>
+		</div>
+		<div class="progressBar">
+			<div class="progress"></div>
+		</div>
+		<div style="overflow: hidden; overflow-y: auto; padding-bottom: 25px; height: calc(100vh - 60px);">
+			<img src={cardImg} style="height: 100px;margin: 10px auto;display: flex;justify-content: center;">
+
+			<div lwc:dom="manual" id="cc-wrapper" class="cc-wrapper cc-inner-wrapper"
+				style="height: 143px;margin: 10px auto;display: flex;justify-content: center;left:-86px;position:relative">
+			</div>
+
+
+
+			<div class="slds ">
+
+				<!-- slds-p-left_x-small slds-p-right_x-small  -->
+				<div class="slds-grid  slds-wrap " style="width: 100%;">
+
+					<div class="slds-col slds-size_1-of-1 slds-large-size_9-of-12 cc-input slds-form "
+						style="width: 100%;    color: black;">
+
+
+						<div class="slds-form__row" style="padding: 0rem 1rem;
+          ">
+							<div class="slds-form__item" role="listitem">
+								<div class="slds-form-element slds-form-element_horizontal  cardNumberFormElement"
+									id="cardNumberFormElement" style="display: flex;
+                flex-direction: column;">
+									<label style="    white-space: nowrap;"  class="slds-form-element__label labels" for="number">
+										<abbr class="slds-required" title="required">*</abbr>
+										<b>{label.CardNumber}</b>
+									</label>
+
+
+									<div>
+										<input placeholder={label.CardNumber} type="tel" name="number"
+											class="slds-input" data-id="card-number" oninput={handleCCInput}
+											onchange={handleCCInput} onblur={handleCCInput}>
+										<div style="margin: unset;"
+											class="slds-form-element__help slds-hide cardNumberError"
+											id="cardNumberError">
+											{label.cardNumberError}</div>
+									</div>
+								</div>
+							</div>
+							<div class="slds-form__item" role="listitem">
+								<div class="slds-form-element slds-form-element_horizontal  cardNameFormElement"
+									id="cardNameFormElement">
+									<label style="    white-space: nowrap;" class="slds-form-element__label labels" for="name">
+										<abbr class="slds-required" title="required">*</abbr>
+										<b>{label.FullName}</b></label>
+									<div>
+										<input placeholder={label.FullName} type="text" name="name" class="slds-input"
+											oninput={handleNameInput} onblur={handleNameInput}>
+										<div style="margin: unset;"
+											class="slds-form-element__help slds-hide cardNameError" id="cardNameError">
+											{label.cardNameError}</div>
+									</div>
+
+								</div>
+							</div>
+							<div style="display: flex;margin-top:10px;width:100%; justify-content: space-between;">
+								<div style="
+              padding-left: 0.75rem;
+              padding-right: 0.75rem;
+             ">
+									<div role="listitem">
+										<div class="slds-form-element slds-form-element_horizontal cardExpiryFormElement"
+											id="cardExpiryFormElement">
+											<label class="slds-form-element__label labels" for="expiry"
+												style="max-width: unset;">
+												<abbr class="slds-required" title="required">*</abbr>
+												<b>{label.Expiry}</b>
+											</label>
+											<div>
+												<input placeholder="MM/YYYY" type="tel" data-id="exp-date" name="expiry"
+													class="slds-input" oninput={handleExpiryInput}
+													onblur={handleExpiryInput}>
+												<div style="margin: unset;"
+													class="slds-form-element__help slds-hide cardExpiryError"
+													id="cardExpiryError">{label.cardExpiryError}</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+
+								<div style="
+              padding-left: 0.75rem;
+              padding-right: 0.75rem;
+             ">
+									<div role="listitem">
+										<div class="slds-form-element slds-form-element_horizontal cardCVVFormElement"
+											id="cardCVVFormElement">
+											<label class="slds-form-element__label labels" for="cvc"
+												style="max-width: unset;">
+												<abbr class="slds-required" title="required">*</abbr>
+												<b>CVV</b>
+											</label>
+
+											<div>
+												<input placeholder="CVV" type="password" data-id="cvv" maxlength="3"
+													name="cvc" class="slds-input cvvinput" oninput={handleCVVInput}
+													onblur={handleCVVInput}>
+												<div style="margin: unset;"
+													class="slds-form-element__help slds-hide cardCVVError"
+													id="cardCVVError">{label.cardCvcError}</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!------------------------Try again buttons -------------------------------  -->
+						<template if:true={paymentError}>
+
+							<section role="dialog" tabindex="-1" aria-modal="true"
+								aria-label="Meaningful description of the modal content"
+								class="slds-modal slds-fade-in-open" style="padding:0px">
+								<div class="slds-modal__container">
+									<button
+										class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse">
+										<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+											<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+										</svg>
+										<span class="slds-assistive-text">{label.Cancel_and_close}</span>
+									</button>
+									<div class="slds-modal__content slds-p-around_medium slds-modal__content_headless"
+										id="modal-content-id-1">
+										<div style="display: flex;">
+											<div>
+												<section class="c-container">
+
+
+
+													<div class="o-circle c-container__circle o-circle__sign--failure">
+														<div class="o-circle__sign"></div>
+													</div>
+
+												</section>
+											</div>
+											<div class="header"
+												style="color:#912d2b;font-size:1.14285714em;padding:2rem;">
+
+												! {failPaymentError}
+											</div>
+
+
+										</div>
+
+
+
+
+									</div>
+									<div class="slds-modal__footer">
+
+										<button style="margin:auto;display:grid" class="slds-button slds-button_success"
+											aria-label="Cancel and close"
+											onclick={removeModal}>{label.failedTryAgain}</button>
+										<!-- <button class="slds-button slds-button_brand">Cancel</button> -->
+									</div>
+								</div>
+							</section>
+							<div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+
+						</template>
+
+
+						<!------------------------Try again buttons -------------------------------  -->
+
+
+						<!-- <div class="button" onclick={dothePayment}>{label.PayNow}</div> -->
+
+
+					</div>
+					<!-- <div class="labelwithdiscount" style="width: 92%;left: 1rem;position: relative;top: 1rem;font-weight: 500;color: grey;">
+					<label for="fname">Discount Coupon</label>
+					<input type="text" data-id="DiscountCoupon" class="DiscountCoupon" name="DiscountCoupon" placeholder="">
+        </div> -->
+
+
+
+
+          
+
+					<template if:true={couponApplied}>
+						<div class="couponApplied">
+					<div class="couponAppliedsummary" style="display:flex; flex-direction: column;">
+							<div class="summaryofAmount" style="border-bottom: 2px solid #ccc; padding-bottom: 0.7rem;color:black !important;">
+									<div class="summary" style="color: black; font-size: larger; left: 1rem; position: relative; top: 0.3rem;">{label.Summary}</div>
+									<div class="subTotal" style="color:black; left: 1rem; position: relative; top: 0.3rem;width: 90%; color:black !important;">  {label.Sub_Total}   <div style="display: inline; position: relative;float: right;color:black !important;;">{currency} {UIprice}</div></div>
+									<div class="TaxInclusive" style="color:black; left: 1rem; position: relative; top: 0.3rem;width: 90%; color:black !important;"> {label.Tax_Inclusive}  <div style="display: inline; position: relative; float: right;color:black !important;">{currency} {taxAmount}</div> </div>
+									<div class="discount" style="color:black; left: 1rem; position: relative; top: 0.3rem;width: 90%;color:black !important;"> {label.Discount}   <div style="display: inline; position: relative;float: right;color:black !important;">{currency} {discountePrice}</div></div>
+
+									<div class="Total" style=" left: 1rem; position: relative; top: 0.3rem;width: 90%;  color: black;"> Total  <div style="display: inline; position: relative;float: right;">{currency} {discountedAmount}</div> </div>
+									 </div>
+						     <div class="pees" style="width: 90%; left: 1rem; position: relative; display: flex; justify-content: space-between;top: 0.3rem;">
+							<p>' {couponToApply} ' {label.Applied}</p>
+							<p style="color:red;cursor:pointer;" onclick={couponRemoved}>{label.Remove}</p>
+						     </div>
+					</div>
+						</div>
+					</template>
+
+
+					<template if:false={couponApplied}>
+						
+						<div style="margin:25px auto 0px;width:100%">
+							
+							<div class="applyCoupons">
+								<div class="summaryofAmount" style="border-bottom: 2px solid #ccc; padding-bottom: 0.7rem;color:black !important;">
+									<div class="summary" style="color: black; font-size: larger; left: 1rem; position: relative; top: 0.3rem;">{label.Summary}</div>
+									<div class="subTotal" style=" left: 1rem; position: relative; top: 0.3rem;width: 90%;">  {label.Sub_Total}   <div style="display: inline; position: relative;float: right;;">{currency} {UIprice}</div></div>
+									<div class="TaxInclusive" style=" left: 1rem; position: relative; top: 0.3rem;width: 90%;"> {label.Tax_Inclusive}  <div style="display: inline; position: relative; float: right;;">{currency} {taxAmount}</div> </div>
+									<div class="Total" style=" left: 1rem; position: relative; top: 0.3rem;width: 90%;  color: black;"> Total  <div style="display: inline; position: relative;float: right;">{currency} {UIprice}</div> </div>
+									 </div>
+								<div class="couponInputArea">
+									<div class="areas">
+									<div class="inputarea" style="    display: flex;">
+									<input type="text" placeholder="Enter coupon code">
+									<p onclick={applingCoupon}>{label.Apply}</p>
+									</div>
+									
+									<template if:true={couponError}>
+										<div class="errorarea">
+								<span style="color:rgb(234, 0, 30);    position: relative;left: 0.4rem;" class="error">{label.Coupon_code_is_not_applicable}</span>
+										</div>
+								</template>
+									</div>
+								</div>
+								
+
+								<div class="availableCouponsList availableCouponsListHidden">
+									<template for:each={couponsList} for:item="coupon">
+										<div class="singleCoupon" key={Id}>
+											<div class="couponHead">
+												<p>{coupon.Name}</p>
+												<p style="color:green" data-coupon={coupon.Name}
+													onclick={couponSelected}>
+													{label.Apply}
+												</p>
+											</div>
+											<div class="couponDetail">
+												This is an test description for the coupon. it indicates what this coupon will provide.
+											</div>
+										</div>
+									</template>
+								</div>
+								<!-- <div class="viewMore">
+									<p onclick={showMoreCoupons}>{couponsToggleStatus}</p>
+								</div> -->
+							</div>
+						</div>
+					</template>
+				
+                   
+					
+
+					<div style="width:50%;min-width:200px" class="slds-col slds-size_4-of-12 button"
+						onclick={dothePayment}>
+						{label.PayNow}
+					</div>
+					<div class="loader"
+						style="display:none;position: absolute; top: 65px; background: white; opacity: 0.5; width: 100%; height: 100vh; padding-top: 250px;">
+						<div class="demo-only demo-only_viewport" style="height:6rem;position:relative">
+							<div role="status" class="slds-spinner slds-spinner_medium">
+								<span class="slds-assistive-text">{label.loading}</span>
+								<div class="slds-spinner__dot-a"></div>
+								<div class="slds-spinner__dot-b"></div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!-- <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12" > -->
+
+			<!-- </div> -->
+
+
+
+
+		</div>
+	</div>
+</template>

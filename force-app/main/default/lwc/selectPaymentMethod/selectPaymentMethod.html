@@ -1,0 +1,31 @@
+<template>
+    <div class="paymentSection">
+        <div class="payments">
+            <div class="paymentHeader">
+                <div class="hidepaymentBtn" onclick={hidePayment}>
+                    <svg class="paymentHeaderBtnIcon" width="12" height="20" xmlns="http://www.w3.org/2000/svg"
+                        style="cursor: pointer;">
+                        <path fill="#187C29"
+                            d="M.222 9.232 9.462.215a.774.774 0 0 1 1.07 0l1.246 1.206a.715.715 0 0 1 0 1.036L4.32 9.75l7.46 7.293a.715.715 0 0 1 0 1.036l-1.247 1.206a.774.774 0 0 1-1.07 0l-9.24-9.017a.715.715 0 0 1 0-1.036Z"
+                            class="fa-primary"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="progressBar">
+                <div class="progress"></div>
+            </div>
+
+            <h1>{label.SelectPaymentMetho}</h1>
+            <div class="paymentMethods flex">
+                <div class="cardPayment" onclick={showCardPayment}>
+                    <img src={cardImg} alt="">
+                    <h2>{label.Card}</h2>
+                </div>
+                <div class="bankPayment" onclick={showBankPayment}>
+                    <img src={bankImg} alt="">
+                    <h2>{label.BankTransfer}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

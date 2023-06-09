@@ -1,0 +1,49 @@
+<template>
+    <article class="article" style="position:relative;z-index:2;transition: all 0.8s;overflow: hidden;font-family: 'Roboto', sans-serif;overflow-x: hidden;
+        background:transparent;background: linear-gradient(180deg, white 130px, transparent 90%);">
+
+        <div class="articledata" style="width:100%;transition: all 0.8s;">
+            <div class="header flex" style="width:100%;background: white;margin-top: 10px;">
+                <div style="width:250px;margin:auto">
+                    <img class="logo" src={logo} alt="" style="width:100%">
+                </div>
+            </div>
+            <div class="content">
+                <p class="contentInfo">{bodyText} </p>
+                <div class="locationInput">
+                    <div class="searchBarIcon1" style="width: 20px;padding-top: 12px;">
+                        <img src={searchIcon} alt="">
+                    </div>
+                    <div style="width: calc(100% - 40px);">
+                        <input style="font-size: medium;color:black" placeholder={enterYourStreet} onkeyup={showzaWash} onfocus={showSuggetions}
+                            onclick={hideEveryComponent} />
+                    </div>
+                    <div class="searchBarIcon2" onclick={hideEverything}
+                        style="cursor: pointer; padding-top: 10px;width:20px">
+                        <span class="spanPlane" onclick={refreshCurrentLocation}><svg width="20" height="20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12.642 1.235a2.51 2.51 0 0 1 2.452.68c.641.638.9 1.57.677 2.451l-3.84 10.22a1.914 1.914 0 0 1-1.795 1.264c-.337-.029-.723-.086-1.067-.285a1.619 1.619 0 0 1-.713-.827l-1.323-4.337a.594.594 0 0 0-.421-.403l-4.1-1.019a1.949 1.949 0 0 1-1.029-2.95 1.94 1.94 0 0 1 .91-.728Z"
+                                    fill="#187C29"></path>
+                            </svg></span>
+                        <span class="spanCross"
+                            style="display:none;font-size:10px;color:rgb(109, 109, 109);border:1px solid rgb(109, 109, 109);border-radius:100px;padding:2px 4px;">&#10005;</span>
+                    </div>
+                </div>
+                <div class="searchSuggestion" style="display: none;">
+                    <div class="noResult" style="display: none;text-align: center;padding: 10px; color:black">No Result Found</div>
+                    <template for:each={searchSuggestionResults} for:item="searchSuggestion">
+                        <p style="color: black;" key={Id} data-placeid={searchSuggestion.value} onclick={suggetionSelected}>
+                            {searchSuggestion.key}
+                        </p>
+                    </template>
+
+                </div>
+
+                
+            </div>
+        </div>
+
+
+    </article>
+</template>

@@ -1,0 +1,79 @@
+<!-- add implements="forceCommunity:availableForAllPageTypes" to surface the component in community builder -->
+<aura:component controller="LightningSelfRegisterController" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="accountId" type="String" required="false" description="accountId for creating the user. If not specified, it will create a PersonAccount if possible for B2C scenario. Or otherwise if it's in a community, the community's self-registration accountId will be used."/>
+    <aura:attribute name="regConfirmUrl" type="String" required="true"/>
+    <aura:attribute name="startUrl" type="String" required="false" description="The url you go to after a successful login" />
+    <aura:attribute name="showError" type="Boolean" required="true" description="" default="false" access="private"/>
+    <aura:attribute name="errorMessage" type="String" required="false" description="" access="private"/>
+    <aura:attribute name="firstnameLabel" type="String" required="false" default="First Name"/>
+    <aura:attribute name="lastnameLabel" type="String" required="false" default="Last Name"/>
+    <aura:attribute name="emailLabel" type="String" required="false" default="Email"/>
+    <aura:attribute name="passwordLabel" type="String" required="false" default="Create Password"/>
+    <aura:attribute name="confirmPasswordLabel" type="String" required="false" default="Confirm Password"/>    
+    <aura:attribute name="submitButtonLabel" type="String" required="false" default="Sign Up"/>
+    <aura:attribute name="includePasswordField" type="Boolean" required="false" default="false" description="Whether to include password"/>    
+    <aura:attribute name="extraFieldsFieldSet" type="String" required="false" description="A field set name whose fields are desired for user registration"/>
+    <aura:attribute name="extraFields" type="list" required="false" description="A field set name whose fields are desired for user registration"/>
+    <aura:handler name="init" value="{!this}" action="{!c.initialize}"/>
+    <aura:attribute name="expid" type="String" required="false" description="The branding experience ID" />    
+    
+    <aura:registerevent name="sitePropagatedStartUrl" type="c:setStartUrl"/>
+    <aura:handler name="init" value="{!this}" action="{!c.initialize}"/>
+    <aura:dependency resource="c:setStartUrl" type="EVENT"/>
+    <!-- Please uncomment
+    <aura:dependency resource="siteforce:registerQueryEventMap" type="EVENT"/>
+    -->
+    <aura:handler event="c:setStartUrl" action="{!c.setStartUrl}"/> 
+    <aura:handler event="c:setExpId" action="{!c.setExpId}"/>    
+    <aura:dependency resource="c:setExpId" type="EVENT"/>   
+    
+    <div style="margin-top:8rem;max-width:300px">
+            <aura:renderIf isTrue="{!v.showError}">
+                <div id="error">
+                    <ui:outputRichText value="{!v.errorMessage}"/>
+                </div>
+            </aura:renderIf>
+            <div id="sfdc_username_container" class="sfdc" style="display:flex">
+   <div> <lightning:icon style=" margin-top: 0.3rem;" iconName="utility:user" size="small" alternativeText="Indicates approval"/></div>
+         <div    style="font-family: Roboto, sans-serif;">        <ui:inputText value="" aura:id="firstname" placeholder="{!$Label.c.firstName}" keyup="{!c.onKeyUp}" class="input sfdc_usernameinput sfdc"/></div>
+            </div>
+
+            <div id="sfdc_nickname_container" class="sfdc" style="display:flex">
+   <div> <lightning:icon style=" margin-top: 0.3rem;" iconName="utility:user" size="small" alternativeText="Indicates approval"/></div>
+                <div    style="font-family: Roboto, sans-serif;">     <ui:inputText value="" aura:id="lastname" placeholder="{!$Label.c.lastName}" keyup="{!c.onKeyUp}" class="input sfdc_usernameinput sfdc"/></div>  
+            </div>
+
+            <div id="sfdc_email_container" class="sfdc" style="display:flex">
+   <div> <lightning:icon style=" margin-top: 0.3rem;" iconName="utility:email" size="small" alternativeText="Indicates approval"/></div>
+                 <div    style="font-family: Roboto, sans-serif;">     <ui:inputText value="" aura:id="email" placeholder="{!$Label.c.loginUserName}" keyup="{!c.onKeyUp}" class="input sfdc_usernameinput sfdc"/></div> 
+            </div>
+            
+            <aura:iteration aura:id="extraFields" items="{!v.extraFields}" var="curField" indexVar="index">
+                <div id="sfdc_extrafield_container" class="sfdc" style="display:flex">
+   <div> <lightning:icon style=" margin-top: 0.3rem;" iconName="utility:lock" size="small" alternativeText="Indicates approval"/></div>
+                    <div    style="font-family: Roboto, sans-serif;">           <ui:inputText value="{!curField.value}" aura:id="{!curField.fieldPath}" placeholder="{!curField.label}" keyup="{!c.onKeyUp}" class="input sfdc_extrafieldinput sfdc"/></div>
+                </div>
+            </aura:iteration>
+
+            <aura:renderIf isTrue="{!v.includePasswordField}">
+                <div id="sfdc_password_container" class="sfdc" style="display:flex">
+   <div> <lightning:icon style=" margin-top: 0.3rem;" iconName="utility:lock" size="small" alternativeText="Indicates approval"/></div>
+                    <div    style="font-family: Roboto, sans-serif;">       <ui:inputSecret value="" aura:id="password" placeholder="{!$Label.c.createPassword}" keyup="{!c.onKeyUp}" class="input sfdc_passwordinput sfdc"/></div>
+                </div>
+    
+                <div id="sfdc_confirm_password_container" class="sfdc" style="display:flex">
+   <div> <lightning:icon style=" margin-top: 0.3rem;" iconName="utility:lock" size="small" alternativeText="Indicates approval"/></div>
+                    <div    style="font-family: Roboto, sans-serif;">        <ui:inputSecret value="" aura:id="confirmPassword" placeholder="{!$Label.c.confirmPassword}" keyup="{!c.onKeyUp}" class="input sfdc_passwordinput sfdc"/></div>
+                </div>
+            </aura:renderIf>
+
+            <div class="sfdc">
+                <div    style="font-family: Roboto, sans-serif;">      <ui:button aura:id="submitButton" label="{!$Label.c.signUp}" press="{!c.handleSelfRegister}" class="sfdc_button"/></div>
+            </div>
+        <div id="sfdc_AlreadyHave_Account_container" class="sfdcalready" style="display:flex" onclick="{!c.displayInterview}">
+            <div    style="font-family: Roboto, sans-serif;">
+                {!$Label.c.AlreadyHaveAccount}
+            </div>
+        </div>
+    </div>
+</aura:component>

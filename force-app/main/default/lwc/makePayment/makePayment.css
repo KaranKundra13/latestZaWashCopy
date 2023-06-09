@@ -1,0 +1,136 @@
+.master{
+    
+    /* padding: 20px;
+    
+   
+    margin: auto;
+    margin-top: 2rem;
+    border: hidden;
+    font-family: Roboto, sans-serif; */
+    border: hidden;
+    width: 100%;
+    transition:all 0.8s;
+}
+.master2{
+    
+    /* padding: 20px;
+    
+   
+    margin: auto;
+    margin-top: 2rem;
+    border: hidden;
+    font-family: Roboto, sans-serif; */
+    border: hidden;
+    animation-name: slider;
+    animation-duration: 2s;
+}
+.card{
+    text-align: center;
+    padding: 10px;
+    /* width: 40rem; */
+    min-width: 20rem;
+    max-width: 50rem;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 2rem;
+    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+    
+    font-family: Roboto, sans-serif;
+    
+}
+
+.card2{
+    text-align: center;
+    padding: 10px;
+    /* width: 40rem; */
+    min-width: 20rem;
+    max-width: 50rem;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 2rem;
+    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+    
+    font-family: Roboto, sans-serif;
+    
+}
+@keyframes slider {
+    from {width: 50rem;}
+    to {width: calc(100% - 470px);}
+  }
+.infoWrap {
+    display: flex;
+    justify-content: center;
+    font-family: Roboto, sans-serif;
+}
+.paymentbtn{
+    margin: 10px;
+    font-family: Roboto, sans-serif;
+}
+span{
+    font-weight: bold;
+    font-family: Roboto, sans-serif;
+}
+.details{
+    /* text-align: left; */
+    font-family: Roboto, sans-serif;
+}
+.paybtn{
+    background-color: #00821a;
+    padding: 13px;
+    border-radius: 5px;
+    /* border-color: honeydew; */
+    border: hidden;
+    color: white;
+    font-family: Roboto, sans-serif;
+    width: 135px;
+}
+.complition{
+    height: 100vh;
+    width: 100vw;
+    margin: auto;
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+    
+}
+.msgHead{
+    margin-top: 18rem;
+}
+.zaWashLogo{
+    padding: 20px;
+    display: flex;
+    justify-content: center ;
+}
+.overlay{
+    width: calc(100% - 470px);
+    height: 110vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    opacity: 0.2;
+    background: black;
+    animation: overlayVisibility 0.8s;
+}
+
+@keyframes overlayVisibility {
+    0%{
+        width:100%;
+    }
+  }
+.table{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+td {
+    border: 1px solid black;
+    padding: 2px;
+    border-collapse: collapse;
+    width: 140px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.keys{
+    font-weight: bold;
+}
